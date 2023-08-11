@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogCard } from "@/components/common/card/BlogCard";
+import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
 import { blogs } from "@/mock/Blogs";
 
 export default function HomeMain() {

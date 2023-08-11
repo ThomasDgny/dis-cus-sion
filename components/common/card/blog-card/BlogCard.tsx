@@ -1,7 +1,4 @@
-import { CircleIcon, BookmarkIcon } from "@radix-ui/react-icons";
 import { TimeConverter } from "@/utils/TimeConverter";
-
-import { Button } from "@/components/ui/button";
 
 import {
   Card,
@@ -14,6 +11,7 @@ import { BlogEntry, User } from "@/types/Types";
 import Link from "next/link";
 import { users } from "@/mock/Users";
 import Image from "next/image";
+import SaveButton from "./SaveButton";
 
 export function BlogCard({
   category,
@@ -28,6 +26,8 @@ export function BlogCard({
   };
 
   const authorData = FindCurrentBlog(users, author_id);
+  const userAvatar = `https://source.unsplash.com/random/200x200?sig=${authorData?.uuid}`;
+
   if (!authorData) return null;
 
   return (
@@ -40,20 +40,18 @@ export function BlogCard({
             <CardDescription>{desc}</CardDescription>
           </div>
           <div>
-            <Button variant="outline">
-              <BookmarkIcon className="h-5 w-5" />
-            </Button>
+            <SaveButton cardID={uuid} />
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex gap-x-2 text-sm text-muted-foreground">
-            <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2">
               <Image
-                src={""}
+                src={userAvatar}
                 alt={authorData.user_name}
                 height={300}
                 width={300}
-                className="rounded-full w-5 h-5 bg-black"
+                className="h-5 w-5 rounded-full bg-black"
               />
               <p className="font-medium">{authorData.user_name}</p>
             </div>
