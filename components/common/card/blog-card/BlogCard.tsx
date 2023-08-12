@@ -12,6 +12,7 @@ import Link from "next/link";
 import { users } from "@/mock/Users";
 import Image from "next/image";
 import SaveButton from "./SaveButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function BlogCard({
   category,
@@ -46,13 +47,10 @@ export function BlogCard({
         <CardContent>
           <div className="flex gap-x-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <Image
-                src={userAvatar}
-                alt={authorData.user_name}
-                height={300}
-                width={300}
-                className="h-5 w-5 rounded-full bg-black"
-              />
+              <Avatar className="h-5 w-5">
+                <AvatarImage src={userAvatar} alt={authorData.user_name} />
+                <AvatarFallback>{authorData.user_name[0]}</AvatarFallback>
+              </Avatar>
               <p className="font-medium">{authorData.user_name}</p>
             </div>
             &#x2022;
