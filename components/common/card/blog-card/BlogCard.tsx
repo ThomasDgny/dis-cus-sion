@@ -10,7 +10,6 @@ import {
 import { BlogEntry, User } from "@/types/Types";
 import Link from "next/link";
 import { users } from "@/mock/Users";
-import Image from "next/image";
 import SaveButton from "./SaveButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
