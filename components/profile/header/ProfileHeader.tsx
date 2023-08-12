@@ -1,8 +1,8 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
+import { EditProfile } from "../dialog/EditProfile";
 
 export default function ProfileHeader() {
   const userAvatar = `https://source.unsplash.com/random/200x200?sig=1`;
@@ -16,7 +16,7 @@ export default function ProfileHeader() {
           </Avatar>
           <div>
             <h1 className="text-4xl font-bold">SkyWalker</h1>
-            <p className="text-lg mt-1 text-gray-600">
+            <p className="mt-1 text-lg text-gray-600">
               HI - I&apos;M SKY AND I WRITE ABOUT TRAVELING
             </p>
             <div className="mt-4 space-x-3">
@@ -29,7 +29,7 @@ export default function ProfileHeader() {
               <Button variant={"outline"}>
                 <Link href={""}>X </Link>
               </Button>
-              <Button>Edit Profile</Button>
+              <EditProfile />
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function ProfileHeader() {
         <img
           src={userAvatar}
           alt="user image"
-          className="w-full h-96 rounded-lg object-cover"
+          className="h-96 w-full rounded-lg object-cover"
         />
       </div>
     </header>
