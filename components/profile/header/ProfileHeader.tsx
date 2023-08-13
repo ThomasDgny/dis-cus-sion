@@ -5,9 +5,14 @@ import Link from "next/link";
 import { EditProfile } from "../dialog/EditProfile";
 import { User } from "@/types/Types";
 
-export default function ProfileHeader({ userData }: { userData: User }) {
+export default function ProfileHeader({
+  userData,
+  sessionUserID,
+}: {
+  userData: User;
+  sessionUserID: string;
+}) {
   const userAvatar = `https://source.unsplash.com/random/200x200?sig=1`;
-  const sessionUserID = "u6i7d8"
   return (
     <header className="grid h-96 grid-cols-1 overflow-hidden md:grid-cols-2">
       <div className="flex flex-col justify-center p-6 md:p-10">

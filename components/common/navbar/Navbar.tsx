@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <div className="flex h-28 w-full items-center justify-between py-4">
       <div>
-        <Link href={"/"}>dis·cus·sion</Link>
+        <Link href={"/"} className="font-semibold">dis·cus·sion</Link>
       </div>
       <div>
         <Link href={`/profile/${currentuser.uuid}`} className="flex items-center gap-2">
