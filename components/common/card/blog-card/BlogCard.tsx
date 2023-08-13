@@ -11,7 +11,7 @@ import { BlogEntry, User } from "@/types/Types";
 import Link from "next/link";
 import { users } from "@/mock/Users";
 import SaveButton from "./SaveButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import DirectProfileButton from "./DirectProfileButton";
 
 export function BlogCard({
   category,
@@ -26,13 +26,11 @@ export function BlogCard({
   };
 
   const authorData = FindCurrentBlog(users, author_id);
-  const userAvatar = `https://source.unsplash.com/random/200x200?sig=${authorData?.uuid}`;
-
   if (!authorData) return null;
 
   return (
     <Card className="cursor-pointer transition-all hover:bg-slate-100">
-      <Link href={uuid}>
+      <Link href={`/${uuid}`}>
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
             <CardTitle>{title}</CardTitle>
@@ -44,14 +42,8 @@ export function BlogCard({
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-x-2 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-5 w-5">
-                <AvatarImage src={userAvatar} alt={authorData.user_name} />
-                <AvatarFallback>{authorData.user_name[0]}</AvatarFallback>
-              </Avatar>
-              <p className="font-medium">{authorData.user_name}</p>
-            </div>
+          <div className="flex gap-x-2 text-sm items-center text-muted-foreground">
+            <DirectProfileButton authorData={authorData} />
             &#x2022;
             <div className="flex items-center">{category}</div>
           </div>

@@ -63,7 +63,7 @@ export const blogs: BlogEntry[] = [
     desc: "Molding clay into intricate forms that reflect the sculptor's imagination and passion.",
     timestamp: "2023-07-25T07:30:00Z",
     category: "Art & Crafts",
-    author_id: "u7i8d9",
+    author_id: "u6i7d8",
   },
   {
     uuid: "b8l9o0g1-8c9a0r1d2",
@@ -79,7 +79,7 @@ export const blogs: BlogEntry[] = [
     desc: "Exploring the beautiful intersection of music and nature's symphony.",
     timestamp: "2023-07-23T06:45:00Z",
     category: "Music",
-    author_id: "u9i0d1",
+    author_id: "u6i7d8",
   },
   {
     uuid: "a0b1l2o3g4-c2a3r4d5",

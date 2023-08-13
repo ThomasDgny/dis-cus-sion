@@ -7,14 +7,14 @@ const FindCurrentBlog = (db: BlogEntry[], currentBlogID: string) => {
 };
 
 export default function page({ params }: { params: { blogID: string } }) {
-  const blog_ID = params.blogID;
-  const blogData = FindCurrentBlog(blogs, blog_ID);
+  const blogID = params.blogID;
+  const blogData = FindCurrentBlog(blogs, blogID);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between md:p-16">
       <div>
-        <h1>{blogData?.title}</h1>
-        <p>{blogData?.desc}</p>
+        <h1 className="text-4xl font-bold">{blogData?.title}</h1>
+        <p className="mt-1 text-lg text-gray-600">{blogData?.desc}</p>
       </div>
     </div>
   );
