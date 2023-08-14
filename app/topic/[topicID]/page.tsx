@@ -6,8 +6,8 @@ const FindCurrentBlog = (db: BlogEntry[], currentBlogID: string) => {
   return db.find((item) => item.uuid === currentBlogID);
 };
 
-export default function page({ params }: { params: { blogID: string } }) {
-  const blogID = params.blogID;
+export default function page({ params }: { params: { topicID: string } }) {
+  const blogID = params.topicID;
   const blogData = FindCurrentBlog(blogs, blogID);
 
   return (

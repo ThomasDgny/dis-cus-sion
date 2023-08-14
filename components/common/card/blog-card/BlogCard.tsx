@@ -30,7 +30,7 @@ export function BlogCard({
 
   return (
     <Card className="cursor-pointer transition-all hover:bg-slate-100">
-      <Link href={`/${uuid}`}>
+      <Link href={`/topic/${uuid}`}>
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
             <CardTitle>{title}</CardTitle>

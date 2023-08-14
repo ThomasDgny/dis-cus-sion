@@ -13,8 +13,8 @@ const FindCurrentUser = (db: User[], currentUserID: string) => {
 
 export default function page({ params }: { params: { userID: string } }) {
   const sessionUserID = "u6i7d8";
-  const userID = params.userID;
-  const userData = FindCurrentUser(users, userID);
+  const userParamID = params.userID;
+  const userData = FindCurrentUser(users, userParamID);
   if (!userData) return null;
 
   const blogsByUser = blogs.filter((blog) => blog.author_id === userData.uuid);
