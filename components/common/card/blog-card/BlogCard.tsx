@@ -42,7 +42,7 @@ export function BlogCard({
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-x-2 text-sm items-center text-muted-foreground">
+          <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
             <DirectProfileButton authorData={authorData} />
             &#x2022;
             <div className="flex items-center">{category}</div>
