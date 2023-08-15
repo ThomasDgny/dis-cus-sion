@@ -20,14 +20,14 @@ export default function ProfileMain({
         <TabsContent value="myBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
             {blogsByUser.map((item) => (
-              <div key={item.uuid} className="py-5">
+              <div key={item.id} className="py-5">
                 <BlogCard
-                  key={item.uuid}
+                  key={item.id}
                   title={item.title}
                   desc={item.desc}
                   category={item.category}
                   timestamp={item.timestamp}
-                  uuid={item.uuid}
+                  id={item.id}
                   author_id={item.author_id}
                 />
               </div>
@@ -37,14 +37,14 @@ export default function ProfileMain({
         <TabsContent value="savedBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
             {savedBlogsByUser.map((item) => (
-              <div key={item.uuid} className="py-5">
+              <div key={item.id} className="py-5">
                 <BlogCard
-                  key={item.uuid}
+                  key={item.id}
                   title={item.title}
                   desc={item.desc}
                   category={item.category}
                   timestamp={item.timestamp}
-                  uuid={item.uuid}
+                  id={item.id}
                   author_id={item.author_id}
                 />
               </div>
