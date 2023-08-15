@@ -12,13 +12,12 @@ export default function ProfileHeader({
   userData: User;
   sessionUserID: string;
 }) {
-  const userAvatar = `https://source.unsplash.com/random/200x200?sig=1`;
   return (
     <header className="grid h-96 grid-cols-1 overflow-hidden md:grid-cols-2">
       <div className="flex flex-col justify-center p-6 md:p-10">
         <div className="mb-4 flex space-x-4">
           <Avatar className="h-14 w-14">
-            <AvatarImage src={userAvatar} alt="CU" />
+            {/* <AvatarImage src={userAvatar} alt="CU" /> */}
             <AvatarFallback>{userData.user_name[0]}</AvatarFallback>
           </Avatar>
           <div>
@@ -35,14 +34,14 @@ export default function ProfileHeader({
                 <Link href={""}>X </Link>
               </Button>
 
-              {userData.uuid === sessionUserID && <EditProfile />}
+              {userData.id === sessionUserID && <EditProfile />}
             </div>
           </div>
         </div>
       </div>
       <div className="hidden md:block">
         <img
-          src={userAvatar}
+          src={""}
           alt="user image"
           className="h-96 w-full rounded-lg object-cover"
         />

@@ -1,5 +1,5 @@
 import { BlogEntry } from "@/types/Types";
-import { supabase } from "@/db/supabaseServer";
+import { supabase } from "@/db/supabase";
 import React from "react";
 
 export default async function page({ params }: { params: { topicID: string } }) {

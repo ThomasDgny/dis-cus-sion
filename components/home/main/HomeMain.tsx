@@ -2,7 +2,7 @@ import React from "react";
 import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
 
 import { BlogEntry } from "@/types/Types";
-import { supabase } from "@/db/supabaseServer";
+import { supabase } from "@/db/supabase";
 
 export default async function HomeMain() {
   const { data, error } = await supabase.from("blogs").select().limit(30)

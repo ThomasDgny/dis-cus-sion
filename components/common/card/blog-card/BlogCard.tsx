@@ -11,7 +11,7 @@ import { BlogEntry, User } from "@/types/Types";
 import Link from "next/link";
 import SaveButton from "./SaveButton";
 import DirectProfileButton from "./DirectProfileButton";
-import { supabase } from "@/db/supabaseServer";
+import { supabase } from "@/db/supabase";
 
 export async function BlogCard({
   category,
