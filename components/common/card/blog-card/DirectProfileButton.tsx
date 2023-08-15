@@ -10,12 +10,12 @@ export default function DirectProfileButton({
 }: {
   authorData: User;
 }) {
-  const userAvatar = `https://source.unsplash.com/random/200x200?sig=${authorData?.uuid}`;
+  const userAvatar = `https://source.unsplash.com/random/200x200?sig=${authorData?.id}`;
   const route = useRouter();
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    route.push(`/profile/${authorData.uuid}`);
+    route.push(`/profile/${authorData.id}`);
   };
 
   return (

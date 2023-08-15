@@ -1,5 +1,5 @@
 export interface BlogEntry {
-  uuid: string;
+  id: string;
   title: string;
   desc: string;
   timestamp: string;
@@ -8,7 +8,7 @@ export interface BlogEntry {
 }
 
 export interface User {
-  uuid: string;
+  id: string;
   email: string;
   user_name: string;
   bio: string;

@@ -1,14 +1,18 @@
-import { blogs } from "@/mock/Blogs";
 import { BlogEntry } from "@/types/Types";
+import { supabase } from "@/db/supabaseServer";
 import React from "react";
 
-const FindCurrentBlog = (db: BlogEntry[], currentBlogID: string) => {
-  return db.find((item) => item.uuid === currentBlogID);
-};
-
-export default function page({ params }: { params: { topicID: string } }) {
+export default async function page({ params }: { params: { topicID: string } }) {
   const blogID = params.topicID;
-  const blogData = FindCurrentBlog(blogs, blogID);
+
+  const { data } = await supabase
+  .from("blogs")
+  .select()
+  .eq("id", blogID)
+  .single()
+
+
+  const blogData : BlogEntry = data
 
   return (
     <div className="flex flex-col items-center justify-between md:p-16">
