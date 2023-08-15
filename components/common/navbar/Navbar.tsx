@@ -12,7 +12,7 @@ const currentuser = {
   avatar: "https://example.com/avatars/avatar7.jpg",
 };
 
-function ActiveUserNavbar({ userAvatar }: { userAvatar: string }) {
+function ActiveUserNavbar() {
   return (
     <div className="flex gap-3">
       <Link
@@ -21,7 +21,7 @@ function ActiveUserNavbar({ userAvatar }: { userAvatar: string }) {
       >
         <h1 className="text-xl font-semibold">{currentuser.user_name}</h1>
         <Avatar className="h-10 w-10">
-          <AvatarImage src={userAvatar} alt="CU" />
+          {/* <AvatarImage src={userAvatar} alt="CU" /> */}
           <AvatarFallback>{currentuser.user_name[0]}</AvatarFallback>
         </Avatar>
       </Link>
@@ -50,8 +50,6 @@ function InActiveUserNavbar() {
 }
 
 export default function Navbar() {
-  const userAvatar = `https://source.unsplash.com/random/200x200?sig=1`;
-
   return (
     <div className="flex h-28 w-full items-center justify-between py-4">
       <div>
@@ -60,7 +58,7 @@ export default function Navbar() {
         </Link>
       </div>
       {currentuser ? (
-        <ActiveUserNavbar userAvatar={userAvatar} />
+        <ActiveUserNavbar/>
       ) : (
         <InActiveUserNavbar />
       )}

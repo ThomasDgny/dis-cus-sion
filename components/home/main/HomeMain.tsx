@@ -5,7 +5,7 @@ import { BlogEntry } from "@/types/Types";
 import { supabase } from "@/db/supabaseServer";
 
 export default async function HomeMain() {
-  const { data, error } = await supabase.from("blogs").select();
+  const { data, error } = await supabase.from("blogs").select().limit(30)
 
   console.log(error?.message);
   const blogs: BlogEntry[] = data ?? [];

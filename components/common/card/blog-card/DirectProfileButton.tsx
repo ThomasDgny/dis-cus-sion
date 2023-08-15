@@ -10,7 +10,6 @@ export default function DirectProfileButton({
 }: {
   authorData: User;
 }) {
-  const userAvatar = `https://source.unsplash.com/random/200x200?sig=${authorData?.id}`;
   const route = useRouter();
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,7 +24,7 @@ export default function DirectProfileButton({
       className="flex items-center gap-2 p-0"
     >
       <Avatar className="h-5 w-5">
-        <AvatarImage src={userAvatar} alt={authorData.user_name} />
+        {/* <AvatarImage src={userAvatar} alt={authorData.user_name} /> */}
         <AvatarFallback>{authorData.user_name[0]}</AvatarFallback>
       </Avatar>
       <p className="font-medium hover:underline">{authorData.user_name}</p>
