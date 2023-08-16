@@ -6,11 +6,10 @@ export default async function page({ params }: { params: { topicID: string } }) 
   const blogID = params.topicID;
 
   const { data } = await supabase
-  .from("blogs")
+  .from("topics")
   .select()
   .eq("id", blogID)
   .single()
-
 
   const blogData : BlogEntry = data ?? []
 

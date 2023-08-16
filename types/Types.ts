@@ -14,3 +14,9 @@ export interface User {
   bio: string;
   avatar: string;
 }
+
+export interface Saved {
+  user_id: string;
+  topic_id: string;
+  id: string;
+}

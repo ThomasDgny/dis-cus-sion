@@ -6,7 +6,7 @@ import { supabase } from "@/db/supabase";
 import React from "react";
 
 export default async function page({ params }: { params: { userID: string } }) {
-  const sessionUserID = "51c427ab-6728-49e9-9e04-09d8182c20f1";
+  const sessionUserID = "9ebc2c79-0249-4a9e-929b-317b66e44369";
   const userParamID = params.userID;
 
   const { data } = await supabase
@@ -16,7 +16,7 @@ export default async function page({ params }: { params: { userID: string } }) {
     .single();
 
   const { data : blogs } = await supabase
-    .from("blogs")
+    .from("topics")
     .select()
     .eq("author_id", userParamID);
 

@@ -6,16 +6,15 @@ import { NewTopicButton } from "./new-topic/NewTopicButton";
 import { supabase } from "@/db/supabase";
 import { User } from "@/types/Types";
 
+const sessionUserID = "9ebc2c79-0249-4a9e-929b-317b66e44369";
 async function ActiveUserNavbar() {
   const { data } = await supabase
     .from("users")
     .select()
-    .eq("id", "51c427ab-6728-49e9-9e04-09d8182c20f1")
+    .eq("id", sessionUserID)
     .single();
 
   const user: User = data ?? [];
-
-  if (!user) return null;
 
   return (
     <div className="flex gap-3">
@@ -26,7 +25,7 @@ async function ActiveUserNavbar() {
           <AvatarFallback>{user.user_name[0]}</AvatarFallback>
         </Avatar>
       </Link>
-      <NewTopicButton />
+      <NewTopicButton sessionUserID={sessionUserID} />
     </div>
   );
 }
@@ -52,7 +51,7 @@ export default function Navbar() {
           dis·cus·sion
         </Link>
       </div>
-      {<ActiveUserNavbar /> ?? <InActiveUserNavbar />}
+      {sessionUserID ? <ActiveUserNavbar /> : <InActiveUserNavbar />}
     </div>
   );
 }
