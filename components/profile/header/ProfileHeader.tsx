@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { EditProfile } from "../dialog/EditProfile";
 import { User } from "@/types/Types";
+import Image from "next/image";
 
 export default function ProfileHeader({
   userData,
@@ -40,10 +41,10 @@ export default function ProfileHeader({
         </div>
       </div>
       <div className="hidden md:block">
-        <img
+        <Image
           src={""}
           alt="user image"
-          className="h-96 w-full rounded-lg object-cover"
+          className="h-96 w-full rounded-lg object-cover bg-slate-200"
         />
       </div>
     </header>
