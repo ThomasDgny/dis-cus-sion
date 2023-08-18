@@ -2,10 +2,10 @@ import React from "react";
 import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
 
 import { BlogEntry } from "@/types/Types";
-import { supabase } from "@/db/supabase";
+import { supabaseClient } from "@/db/supabaseClient";
 
 export default async function HomeMain() {
-  const { data, error } = await supabase.from("topics").select().limit(30)
+  const { data, error } = await supabaseClient.from("topics").select().limit(30)
 
   console.log(error?.message);
   const blogs: BlogEntry[] = data ?? [];
