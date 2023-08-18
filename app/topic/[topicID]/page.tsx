@@ -1,11 +1,11 @@
 import { BlogEntry } from "@/types/Types";
-import { supabase } from "@/db/supabase";
+import { supabaseClient } from "@/db/supabaseClient";
 import React from "react";
 
 export default async function page({ params }: { params: { topicID: string } }) {
   const blogID = params.topicID;
 
-  const { data } = await supabase
+  const { data } = await supabaseClient
   .from("topics")
   .select()
   .eq("id", blogID)

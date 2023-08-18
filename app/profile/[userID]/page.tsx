@@ -1,7 +1,7 @@
 import ProfileHeader from "@/components/profile/header/ProfileHeader";
 import ProfileMain from "@/components/profile/main/ProfileMain";
 import { BlogEntry, User } from "@/types/Types";
-import { supabase } from "@/db/supabase";
+import {  supabaseClient } from "@/db/supabaseClient";
 
 import React from "react";
 
@@ -9,13 +9,13 @@ export default async function page({ params }: { params: { userID: string } }) {
   const sessionUserID = "9ebc2c79-0249-4a9e-929b-317b66e44369";
   const userParamID = params.userID;
 
-  const { data } = await supabase
+  const { data } = await supabaseClient
     .from("users")
     .select()
     .eq("id", userParamID)
     .single();
 
-  const { data : blogs } = await supabase
+  const { data : blogs } = await supabaseClient
     .from("topics")
     .select()
     .eq("author_id", userParamID);

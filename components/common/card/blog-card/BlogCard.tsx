@@ -11,7 +11,7 @@ import { BlogEntry, User } from "@/types/Types";
 import Link from "next/link";
 import SaveButton from "./SaveButton";
 import DirectProfileButton from "./DirectProfileButton";
-import { supabase } from "@/db/supabase";
+import { supabaseClient } from "@/db/supabaseClient";
 
 export async function BlogCard({
   category,
@@ -21,12 +21,11 @@ export async function BlogCard({
   id,
   author_id,
 }: BlogEntry) {
-
-  const { data } = await supabase
+  const { data } = await supabaseClient
     .from("users")
     .select()
     .eq("id", author_id)
-    .single()
+    .single();
 
   const user: User = data ?? [];
 

@@ -3,12 +3,12 @@ import React from "react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NewTopicButton } from "./new-topic/NewTopicButton";
-import { supabase } from "@/db/supabase";
+import { supabaseClient } from "@/db/supabaseClient";
 import { User } from "@/types/Types";
 
 const sessionUserID = "9ebc2c79-0249-4a9e-929b-317b66e44369";
 async function ActiveUserNavbar() {
-  const { data } = await supabase
+  const { data } = await supabaseClient
     .from("users")
     .select()
     .eq("id", sessionUserID)
