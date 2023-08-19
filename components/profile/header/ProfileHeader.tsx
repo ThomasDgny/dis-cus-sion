@@ -1,10 +1,8 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { EditProfile } from "../dialog/EditProfile";
 import { User } from "@/types/Types";
 import Image from "next/image";
+import ProfileHeaderActiveUserActions from "./profile-header-activeuser/ProfileHeaderActiveUserActions";
 
 export default function ProfileHeader({
   userData,
@@ -24,19 +22,9 @@ export default function ProfileHeader({
           <div>
             <h1 className="text-4xl font-bold">{userData.user_name}</h1>
             <p className="mt-1 text-lg text-gray-600">{userData.bio}</p>
-            <div className="mt-4 space-x-3">
-              <Button variant={"outline"}>
-                <Link href={""}>IG </Link>
-              </Button>
-              <Button variant={"outline"}>
-                <Link href={""}>FB </Link>
-              </Button>
-              <Button variant={"outline"}>
-                <Link href={""}>X </Link>
-              </Button>
-
-              {userData.id === sessionUserID && <EditProfile />}
-            </div>
+            {userData.id === sessionUserID && (
+              <ProfileHeaderActiveUserActions />
+            )}
           </div>
         </div>
       </div>
@@ -44,7 +32,7 @@ export default function ProfileHeader({
         <Image
           src={""}
           alt="user image"
-          className="h-96 w-full rounded-lg object-cover bg-slate-200"
+          className="h-96 w-full rounded-lg bg-slate-200 object-cover"
         />
       </div>
     </header>

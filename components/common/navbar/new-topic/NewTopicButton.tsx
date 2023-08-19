@@ -18,7 +18,7 @@ import { FormEvent, useState } from "react";
 import { SelectCategory } from "./SelectCategory";
 import { supabaseClient } from "@/db/supabaseClient";
 
-export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
+export function NewTopicButton({ sessionUserID }: { sessionUserID: string  }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
