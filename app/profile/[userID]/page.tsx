@@ -6,7 +6,7 @@ import {  supabaseClient } from "@/db/supabaseClient";
 import React from "react";
 
 export default async function page({ params }: { params: { userID: string } }) {
-  const sessionUserID = "9ebc2c79-0249-4a9e-929b-317b66e44369";
+  const sessionUserID = "982ad381-1060-498d-8782-d78b26d4f979";
   const userParamID = params.userID;
 
   const { data } = await supabaseClient

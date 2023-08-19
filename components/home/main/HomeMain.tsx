@@ -5,11 +5,15 @@ import { BlogEntry } from "@/types/Types";
 import { supabaseClient } from "@/db/supabaseClient";
 
 export default async function HomeMain() {
-  const { data, error } = await supabaseClient.from("topics").select().limit(30)
+  const { data, error } = await supabaseClient
+    .from("topics")
+    .select()
+    .limit(30)
+    .order('timestamp', { ascending: false })
 
   console.log(error?.message);
   const blogs: BlogEntry[] = data ?? [];
-  
+
   return (
     <div>
       <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
