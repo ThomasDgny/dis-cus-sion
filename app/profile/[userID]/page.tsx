@@ -1,7 +1,7 @@
 import ProfileHeader from "@/components/profile/header/ProfileHeader";
 import ProfileMain from "@/components/profile/main/ProfileMain";
 import { BlogEntry, User } from "@/types/Types";
-import {  supabaseClient } from "@/db/supabaseClient";
+import { supabaseClient } from "@/db/supabaseClient";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
@@ -9,17 +9,16 @@ import { cookies } from "next/headers";
 import React from "react";
 import { supabase } from "@/db/supabase";
 
+export const dynamic = 'force-dynamic'
+
 export default async function page({ params }: { params: { userID: string } }) {
-
-  const supabase = createServerComponentClient<Database>({
-    cookies,
-  });
-
+  const supabase = createServerComponentClient<Database>({ cookies });
+  
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const sessionUserID = session?.user.id ?? '';
+  const sessionUserID = session?.user.id ?? "";
   const userParamID = params.userID;
 
   const { data } = await supabaseClient
@@ -28,7 +27,7 @@ export default async function page({ params }: { params: { userID: string } }) {
     .eq("id", userParamID)
     .single();
 
-  const { data : blogs } = await supabaseClient
+  const { data: blogs } = await supabaseClient
     .from("topics")
     .select()
     .eq("author_id", userParamID);
