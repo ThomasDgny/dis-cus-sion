@@ -5,17 +5,18 @@ import InActiveUserNavbar from "./InActiveUserNavbar/InActiveUserNavbar";
 import { supabaseClient } from "@/db/supabaseClient";
 import { User } from "@/types/Types";
 import Typography from "@/Typography/Typography";
-
+import { supabase } from "@/db/supabase";
 
 export default async function Navbar() {
-  const sessionUserID = "982ad381-1060-498d-8782-d78b26d4f979";
+  const sessionUserID = (await supabase.auth.getUser()).data.user?.id;
+
   const { data } = await supabaseClient
     .from("users")
     .select()
     .eq("id", sessionUserID)
     .single();
 
-  const user: User = data ?? null;
+  const sessionUserData: User = data ?? null;
 
   return (
     <div className="flex h-28 w-full items-center justify-between py-4">
@@ -24,7 +25,11 @@ export default async function Navbar() {
           <Typography text="dis·cus·sion" tagName="p" variation="default" />
         </Link>
       </div>
-      {data ? <ActiveUserNavbar user={user} /> : <InActiveUserNavbar />}
+      {data ? (
+        <ActiveUserNavbar user={sessionUserData} />
+      ) : (
+        <InActiveUserNavbar />
+      )}
     </div>
   );
 }

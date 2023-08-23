@@ -12,7 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export function EditProfile() {
+
+export async function EditProfile() {
+
+
+  // const { data, error } = await supabaseClient
+  //   .from("users")
+  //   .update({ name: "Australia" })
+  //   .eq("id", 1)
+  //   .select();
+
   return (
     <Dialog>
       <DialogTrigger asChild>

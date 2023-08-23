@@ -1,38 +1,37 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button" 
-import { Input } from "@/components/ui/input" 
-import { Database } from "@/lib/database.type" 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { useRouter } from "next/navigation"
-import { Disc2, Github } from "../../../../node_modules/lucide-react"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Database } from "@/lib/database.type";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { Disc2, Github } from "../../../../node_modules/lucide-react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const router = useRouter()
-  const supabase = createClientComponentClient<Database>()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const router = useRouter();
+  const supabase = createClientComponentClient<Database>();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
-    
-      await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-      router.replace("/")
-    
+    event.preventDefault();
+    setIsLoading(true);
+
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    router.replace("/");
 
     setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
+      setIsLoading(false);
+    }, 1000);
   }
 
   return (
@@ -48,7 +47,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
-              onChange={(e) => setEmail(e.target.value)} 
+              onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
             <Input
@@ -59,14 +58,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="password"
               autoCorrect="off"
               disabled={isLoading}
-              onChange={(e) => setPassword(e.target.value)} 
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <Disc2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
+            {isLoading && <Disc2 className="mr-2 h-4 w-4 animate-spin" />}
             Login In with Email
           </Button>
         </div>
@@ -90,5 +87,5 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         Github
       </Button>
     </div>
-  )
+  );
 }

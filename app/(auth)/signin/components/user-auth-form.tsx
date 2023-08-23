@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,18 +8,20 @@ import { Input } from "@/components/ui/input";
 import { Database } from "@/lib/database.type";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Disc2, Github } from "../../../../node_modules/lucide-react"
+import { Disc2, Github } from "../../../../node_modules/lucide-react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [user_name, setUser_name] = useState<string>("");
+
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  function clearImputs() {
+  function clearInputs() {
     setEmail("");
     setPassword("");
   }
@@ -28,15 +30,31 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
-    await supabase.auth.signUp({
+    const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
+    if (authError) {
+      console.log(authError.cause);
+      console.log(authError.message);
+      console.log(authError.name);
+    }
 
-    clearImputs();
+    const userID = data.user?.id;
+    const { error } = await supabase
+      .from("users")
+      .insert({ id: userID, email: email, user_name: user_name });
+
+    if (error) {
+      console.log(error.message);
+      console.log(error.hint);
+      console.log(error.details);
+    }
+
+    clearInputs();
     router.replace("/");
 
     setTimeout(() => {
@@ -49,6 +67,17 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-2">
+            <Input
+              id="username"
+              placeholder="John Doe"
+              type="text"
+              autoCapitalize="none"
+              autoComplete="username"
+              autoCorrect="off"
+              disabled={isLoading}
+              onChange={(e) => setUser_name(e.target.value)}
+              value={user_name}
+            />
             <Input
               id="email"
               placeholder="name@example.com"

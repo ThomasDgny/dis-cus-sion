@@ -4,9 +4,10 @@ import { BlogEntry, User } from "@/types/Types";
 import {  supabaseClient } from "@/db/supabaseClient";
 
 import React from "react";
+import { supabase } from "@/db/supabase";
 
 export default async function page({ params }: { params: { userID: string } }) {
-  const sessionUserID = "982ad381-1060-498d-8782-d78b26d4f979";
+  const sessionUserID = (await supabase.auth.getUser()).data.user?.id ?? "user is not active"
   const userParamID = params.userID;
 
   const { data } = await supabaseClient

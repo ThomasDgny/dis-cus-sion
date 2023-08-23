@@ -11,20 +11,21 @@ export default function ProfileHeader({
   userData: User;
   sessionUserID: string;
 }) {
+  const { avatar, bio, id, user_name } = userData;
+  const avatarFallback = user_name[0].toLocaleUpperCase();
+
   return (
     <header className="grid h-96 grid-cols-1 overflow-hidden md:grid-cols-2">
       <div className="flex flex-col justify-center p-6 md:p-10">
         <div className="mb-4 flex space-x-4">
           <Avatar className="h-14 w-14">
-            {/* <AvatarImage src={userAvatar} alt="CU" /> */}
-            <AvatarFallback>{userData.user_name[0]}</AvatarFallback>
+            {/* <AvatarImage src={avatar} alt="CU" /> */}
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-4xl font-bold">{userData.user_name}</h1>
-            <p className="mt-1 text-lg text-gray-600">{userData.bio}</p>
-            {userData.id === sessionUserID && (
-              <ProfileHeaderActiveUserActions />
-            )}
+            <h1 className="text-4xl font-bold">{user_name}</h1>
+            <p className="mt-1 text-lg text-gray-600">{bio}</p>
+            {id === sessionUserID && <ProfileHeaderActiveUserActions />}
           </div>
         </div>
       </div>
