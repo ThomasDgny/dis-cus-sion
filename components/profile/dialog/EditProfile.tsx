@@ -13,14 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 
-export async function EditProfile() {
+export function EditProfile() {
 
-
-  // const { data, error } = await supabaseClient
-  //   .from("users")
-  //   .update({ name: "Australia" })
-  //   .eq("id", 1)
-  //   .select();
 
   return (
     <Dialog>

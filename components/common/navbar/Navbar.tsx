@@ -5,11 +5,21 @@ import InActiveUserNavbar from "./InActiveUserNavbar/InActiveUserNavbar";
 import { supabaseClient } from "@/db/supabaseClient";
 import { User } from "@/types/Types";
 import Typography from "@/Typography/Typography";
-import { supabase } from "@/db/supabase";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.type";
+import { cookies } from "next/headers";
 
 export default async function Navbar() {
-  const sessionUserID = (await supabase.auth.getUser()).data.user?.id;
+  const supabase = createServerComponentClient<Database>({
+    cookies,
+  });
 
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const sessionUserID = session?.user.id ?? console.log("user is not active");
+  
   const { data } = await supabaseClient
     .from("users")
     .select()

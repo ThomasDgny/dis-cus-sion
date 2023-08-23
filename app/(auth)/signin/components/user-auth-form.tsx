@@ -30,36 +30,34 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
-    const { data, error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
-    if (authError) {
-      console.log(authError.cause);
-      console.log(authError.message);
-      console.log(authError.name);
+    try {
+      const { data, error: authError } = await supabase.auth.signUp({
+        email,
+        password
+      });
+
+      if (authError) {
+        console.error("Authentication error:", authError.message);
+      } else {
+        const userID = data.user?.id;
+        const { error } = await supabase
+          .from("users")
+          .insert({ id: userID, email: email, user_name: user_name });
+
+        if (error) {
+          console.error("User insertion error:", error.message);
+        } else {
+          clearInputs();
+          router.replace("/");
+        }
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
-
-    const userID = data.user?.id;
-    const { error } = await supabase
-      .from("users")
-      .insert({ id: userID, email: email, user_name: user_name });
-
-    if (error) {
-      console.log(error.message);
-      console.log(error.hint);
-      console.log(error.details);
-    }
-
-    clearInputs();
-    router.replace("/");
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   }
 
   return (

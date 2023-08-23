@@ -11,7 +11,7 @@ export default function ProfileHeader({
   userData: User;
   sessionUserID: string;
 }) {
-  const { avatar, bio, id, user_name } = userData;
+  const { bio, id, user_name } = userData;
   const avatarFallback = user_name[0].toLocaleUpperCase();
 
   return (

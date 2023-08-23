@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/types/Types";
@@ -11,10 +11,12 @@ export default function DirectProfileButton({
   authorData: User;
 }) {
   const route = useRouter();
+  if (!authorData) return null;
+  const { id, user_name } = authorData;
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    route.push(`/profile/${authorData.id}`);
+    route.push(`/profile/${id}`);
   };
 
   return (
@@ -25,9 +27,9 @@ export default function DirectProfileButton({
     >
       <Avatar className="h-5 w-5">
         {/* <AvatarImage src={userAvatar} alt={authorData.user_name} /> */}
-        <AvatarFallback>{authorData.user_name[0]}</AvatarFallback>
+        <AvatarFallback>{user_name[0]}</AvatarFallback>
       </Avatar>
-      <p className="font-medium hover:underline">{authorData.user_name}</p>
+      <p className="font-medium hover:underline">{user_name}</p>
     </Button>
   );
 }

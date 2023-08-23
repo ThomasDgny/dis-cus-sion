@@ -1,23 +1,28 @@
-"use client";
-
-import React, { useEffect } from "react";
-
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthProvider";
+import React from "react";
+import { redirect } from "next/navigation";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.type";
+import { cookies } from "next/headers";
 
 interface AccountVerifierWrapperProps {
   children: React.ReactNode;
 }
 
-export default function AccountVerifierWrapper({
+export default async function AccountVerifierWrapper({
   children,
 }: AccountVerifierWrapperProps) {
-  const router = useRouter();
-  const { user } = useAuth();
+  const supabase = createServerComponentClient<Database>({
+    cookies,
+  });
 
-  useEffect(() => {
-    if (user) return router.replace("/");
-  }, [user, router]);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) {
+    // this is a protected route - only users who are signed in can view this route
+    redirect("/");
+  }
 
   return <>{children}</>;
 }
