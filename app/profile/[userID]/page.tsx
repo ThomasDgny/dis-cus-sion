@@ -22,13 +22,13 @@ export default async function page({ params }: { params: { userID: string } }) {
   const sessionUserID = session?.user.id ?? '';
   const userParamID = params.userID;
 
-  const { data } = await supabase
+  const { data } = await supabaseClient
     .from("users")
     .select()
     .eq("id", userParamID)
     .single();
 
-  const { data : blogs } = await supabase
+  const { data : blogs } = await supabaseClient
     .from("topics")
     .select()
     .eq("author_id", userParamID);
