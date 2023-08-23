@@ -9,8 +9,6 @@ import { cookies } from "next/headers";
 import React from "react";
 import { supabase } from "@/db/supabase";
 
-export const dynamic = 'force-dynamic'
-
 export default async function page({ params }: { params: { userID: string } }) {
   const supabase = createServerComponentClient<Database>({ cookies });
   

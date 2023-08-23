@@ -9,9 +9,6 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 
-
-export const dynamic = 'force-dynamic'
-
 export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({
     cookies,
