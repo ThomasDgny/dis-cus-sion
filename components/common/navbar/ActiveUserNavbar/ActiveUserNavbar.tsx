@@ -1,16 +1,18 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NewTopicButton } from "../new-topic/NewTopicButton";
-
 import Link from "next/link";
 import { User } from "@/types/Types";
 
-export default async function ActiveUserNavbar({
+export default function ActiveUserNavbar({
   user,
 }: {
-  user: User;
+  user: User | null;
 }) {
-  
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="flex gap-3">
       <Link href={`/profile/${user.id}`} className="flex items-center gap-2">

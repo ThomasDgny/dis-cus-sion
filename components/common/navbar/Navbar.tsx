@@ -1,32 +1,18 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import ActiveUserNavbar from "./ActiveUserNavbar/ActiveUserNavbar";
 import InActiveUserNavbar from "./InActiveUserNavbar/InActiveUserNavbar";
+import Typography from "@/Typography/Typography";
+import { useAuth } from "@/context/AuthProvider";
 import { supabaseClient } from "@/db/supabaseClient";
 import { User } from "@/types/Types";
-import Typography from "@/Typography/Typography";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/lib/database.type";
-import { cookies } from "next/headers";
 
-export default async function Navbar() {
-  const supabase = createServerComponentClient<Database>({
-    cookies,
-  });
+export default function Navbar() {
+  const { user } = useAuth();
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const sessionUserID = session?.user.id ?? console.log("user is not active");
-  
-  const { data } = await supabaseClient
-    .from("users")
-    .select()
-    .eq("id", sessionUserID)
-    .single();
-
-  const sessionUserData: User = data ?? null;
+  const sessionUserData = user;
 
   return (
     <div className="flex h-28 w-full items-center justify-between py-4">
@@ -35,7 +21,7 @@ export default async function Navbar() {
           <Typography text="dis·cus·sion" tagName="p" variation="default" />
         </Link>
       </div>
-      {data ? (
+      {sessionUserData ? (
         <ActiveUserNavbar user={sessionUserData} />
       ) : (
         <InActiveUserNavbar />
