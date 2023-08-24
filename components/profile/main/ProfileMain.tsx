@@ -17,6 +17,7 @@ export default function ProfileMain({
           <TabsTrigger value="savedBlogs">Saved</TabsTrigger>
         </TabsList>
         <hr className="mt-5" />
+        
         <TabsContent value="myBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
             {blogsByUser.map((item) => (
@@ -34,6 +35,7 @@ export default function ProfileMain({
             ))}
           </div>
         </TabsContent>
+        
         <TabsContent value="savedBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
             {savedBlogsByUser.map((item) => (

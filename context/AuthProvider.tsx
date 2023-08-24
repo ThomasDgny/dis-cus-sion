@@ -58,8 +58,6 @@ export default function AuthProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, supabase]);
 
-  console.log(user);
-
   return (
     <AuthContext.Provider value={{ user, handleSignOut }}>
       {children}

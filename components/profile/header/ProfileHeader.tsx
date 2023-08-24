@@ -11,7 +11,7 @@ export default function ProfileHeader({
   userData: User;
   sessionUserID: string;
 }) {
-  const { bio, id, user_name } = userData;
+  const { bio, id, user_name,avatar } = userData;
   const avatarFallback = user_name[0].toLocaleUpperCase();
 
   return (
@@ -19,7 +19,7 @@ export default function ProfileHeader({
       <div className="flex flex-col justify-center p-6 md:p-10">
         <div className="mb-4 flex space-x-4">
           <Avatar className="h-14 w-14">
-            {/* <AvatarImage src={avatar} alt="CU" /> */}
+           <AvatarImage src={avatar} alt="CU" /> 
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
           <div>
