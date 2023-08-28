@@ -21,13 +21,12 @@ export async function BlogCard({
   id,
   author_id,
 }: Topics) {
-  const { data } = await supabaseClient
+  
+  const { data: user } = await supabaseClient
     .from("users")
     .select()
     .eq("id", author_id)
     .single();
-
-  const user: User = data ?? [];
 
   return (
     <Card className="cursor-pointer transition-all hover:bg-slate-100">
@@ -44,7 +43,7 @@ export async function BlogCard({
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
-            <DirectProfileButton authorData={user} />
+            {user && <DirectProfileButton authorData={user} />}
             &#x2022;
             <div className="flex items-center">{category}</div>
           </div>

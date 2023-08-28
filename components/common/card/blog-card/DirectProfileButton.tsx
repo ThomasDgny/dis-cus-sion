@@ -11,7 +11,8 @@ export default function DirectProfileButton({
   authorData: User;
 }) {
   const route = useRouter();
-  if (!authorData) return null;
+  if (!authorData || authorData.user_name === null) return null;
+  
   const { id, user_name } = authorData;
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
