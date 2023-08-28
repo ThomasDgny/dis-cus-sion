@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,10 +12,35 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-
+import { useAuth } from "@/context/AuthProvider";
+import { Database } from "@/lib/database.type";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { FormEvent, useState } from "react";
 
 export function EditProfile() {
+  const client = createClientComponentClient<Database>();
+  const { user } = useAuth();
+  const [userName, setUserName] = useState<string | undefined>(user?.user_name ?? "");
+  const [bio, setBio] = useState<string | undefined>(user?.bio ?? "");
 
+  async function handleUpdateProfile(event: FormEvent) {
+    event.preventDefault();
+
+    const updates: Database["public"]["Tables"]["users"]["Update"] = {
+      user_name: userName,
+      bio: bio,
+      avatar: "",
+    };
+
+    const { error } = await client
+      .from("users")
+      .update(updates)
+      .eq("id", user?.id);
+
+    if (error) {
+      alert(error.message);
+    }
+  }
 
   return (
     <Dialog>
@@ -33,7 +59,12 @@ export function EditProfile() {
             <Label htmlFor="name" className="text-right">
               Username
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input
+              id="name"
+              value={userName}
+              className="col-span-3"
+              onChange={(e) => setUserName(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="picture" className="text-right">
@@ -45,11 +76,16 @@ export function EditProfile() {
             <Label htmlFor="bio" className="text-right">
               Bio
             </Label>
-            <Textarea id="bio" value="@peduarte" className="col-span-3" />
+            <Textarea
+              id="bio"
+              value={bio}
+              className="col-span-3"
+              onChange={(e) => setBio(e.target.value)}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button onClick={handleUpdateProfile}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

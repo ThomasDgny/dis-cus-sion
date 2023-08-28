@@ -1,22 +1,7 @@
-export interface BlogEntry {
-  id: string;
-  title: string;
-  desc: string;
-  timestamp: string;
-  category: string;
-  author_id: string;
-}
+import { Database } from "@/lib/database.type";
 
-export interface User {
-  id: string;
-  email: string;
-  user_name: string;
-  bio: string;
-  avatar: string;
-}
+export type Topics = Database["public"]["Tables"]["topics"]["Row"];
 
-export interface Saved {
-  user_id: string;
-  topic_id: string;
-  id: string;
-}
+export type User = Database["public"]["Tables"]["users"]["Row"];
+
+export type Saved = Database["public"]["Tables"]["saved"]["Row"];

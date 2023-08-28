@@ -1,7 +1,7 @@
 import React from "react";
 import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
 
-import { BlogEntry } from "@/types/Types";
+import { Topics } from "@/types/Types";
 import { supabaseClient } from "@/db/supabaseClient";
 
 export default async function HomeMain() {
@@ -12,7 +12,7 @@ export default async function HomeMain() {
     .order('timestamp', { ascending: false })
 
   console.log(error?.message);
-  const blogs: BlogEntry[] = data ?? [];
+  const blogs: Topics[] = data ?? [];
 
   return (
     <div>

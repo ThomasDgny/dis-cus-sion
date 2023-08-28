@@ -30,21 +30,12 @@ export default function AuthProvider({
         .eq("id", userID)
         .single();
 
-      setUser(data);
+      setUser(data ?? undefined);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
 
-  async function handleSignOut() {
-    try {
-      const { error } = await supabase.auth.signOut();
-      setUser(undefined)
-      router.replace("/");
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   useEffect(() => {
     const {
@@ -57,6 +48,18 @@ export default function AuthProvider({
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, supabase]);
+
+
+  async function handleSignOut() {
+    try {
+      const { error } = await supabase.auth.signOut();
+      setUser(undefined)
+      router.replace("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <AuthContext.Provider value={{ user, handleSignOut }}>

@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BlogEntry, User } from "@/types/Types";
+import { Topics, User } from "@/types/Types";
 import Link from "next/link";
 import SaveButton from "./SaveButton";
 import DirectProfileButton from "./DirectProfileButton";
@@ -20,7 +20,7 @@ export async function BlogCard({
   timestamp,
   id,
   author_id,
-}: BlogEntry) {
+}: Topics) {
   const { data } = await supabaseClient
     .from("users")
     .select()

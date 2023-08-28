@@ -1,13 +1,13 @@
 import React from "react";
 import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
-import { BlogEntry } from "@/types/Types";
+import { Topics } from "@/types/Types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function ProfileMain({
   blogsByUser,
   savedBlogsByUser,
 }: {
-  blogsByUser: BlogEntry[];
-  savedBlogsByUser: BlogEntry[];
+  blogsByUser: Topics[];
+  savedBlogsByUser: Topics[];
 }) {
   return (
     <main>
