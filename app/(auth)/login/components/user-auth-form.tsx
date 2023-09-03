@@ -27,6 +27,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       email,
       password,
     });
+    router.refresh();
     router.replace("/");
 
     setTimeout(() => {

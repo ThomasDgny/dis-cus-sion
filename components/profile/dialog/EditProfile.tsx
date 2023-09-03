@@ -14,19 +14,30 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthProvider";
 import { Database } from "@/lib/database.type";
+import { UserUpdate } from "@/types/Types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export function EditProfile() {
   const client = createClientComponentClient<Database>();
-  const { user } = useAuth();
-  const [userName, setUserName] = useState<string | undefined>(user?.user_name ?? "");
-  const [bio, setBio] = useState<string | undefined>(user?.bio ?? "");
+  const { user, setUser } = useAuth();
+  const [userName, setUserName] = useState<string | undefined>();
+  const [bio, setBio] = useState<string | undefined>();
+  const [loading, setLoading] = useState(false);
+
+  function userDataMount(data: any) {
+    setUserName(data?.user_name ?? "no data found");
+    setBio(data?.bio ?? "no data found");
+  }
+
+  useEffect(() => {
+    userDataMount(user);
+  }, [user]);
 
   async function handleUpdateProfile(event: FormEvent) {
     event.preventDefault();
-
-    const updates: Database["public"]["Tables"]["users"]["Update"] = {
+    setLoading(true);
+    const updates: UserUpdate = {
       user_name: userName,
       bio: bio,
       avatar: "",
@@ -37,9 +48,12 @@ export function EditProfile() {
       .update(updates)
       .eq("id", user?.id);
 
+    setLoading(false);
+
     if (error) {
-      alert(error.message);
+      alert(`something went wrong dude`);
     }
+    // alert("saved succesfull");
   }
 
   return (
@@ -85,7 +99,9 @@ export function EditProfile() {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleUpdateProfile}>Save changes</Button>
+          <Button onClick={handleUpdateProfile} disabled={loading}>
+            {!loading ? "Save changes" : "Loading"}{" "}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

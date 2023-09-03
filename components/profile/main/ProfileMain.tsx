@@ -7,7 +7,7 @@ export default function ProfileMain({
   savedBlogsByUser,
 }: {
   blogsByUser: Topics[];
-  savedBlogsByUser: Topics[];
+  savedBlogsByUser?: Topics[];
 }) {
   return (
     <main>
@@ -38,7 +38,7 @@ export default function ProfileMain({
         
         <TabsContent value="savedBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
-            {savedBlogsByUser.map((item) => (
+            {savedBlogsByUser?.map((item) => (
               <div key={item.id} className="py-5">
                 <BlogCard
                   key={item.id}
