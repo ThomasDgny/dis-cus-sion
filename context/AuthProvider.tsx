@@ -37,25 +37,6 @@ export default function AuthProvider({
     }
   }
 
-
-    supabase
-      .channel("table-db-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "users",
-          filter: `id=eq.${user?.id}`,
-        },
-        (payload) => {
-          const data = payload.new 
-          console.log("Set User",data)
-          setUser(data);
-        },
-      )
-      .subscribe();
-
   useEffect(() => {
     const {
       data: { subscription },

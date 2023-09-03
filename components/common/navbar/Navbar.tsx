@@ -12,13 +12,11 @@ export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
   const { data: user } = await supabase.auth.getUser();
- 
   const { data : sessionUser } = await supabase
   .from("users")
   .select()
   .eq("id", user.user?.id)
   .single();
-
 
   return (
     <div className="flex h-28 w-full items-center justify-between py-4">
