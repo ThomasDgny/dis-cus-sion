@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -12,12 +12,33 @@ import { Disc2, Github } from "../../../../node_modules/lucide-react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
+interface ErrorProps {
+  status?: boolean;
+  message?: string | null;
+}
+
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<ErrorProps>({
+    status: false,
+    message: null,
+  });
   const supabase = createClientComponentClient<Database>();
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter();
+
+  const clearError = () => {
+    setError({
+      status: false,
+      message: null,
+    });
+  };
+
+  const clearInputs = () => {
+    setEmail("");
+    setPassword("");
+  };
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -27,8 +48,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       email,
       password,
     });
-    router.refresh();
-    router.replace("/");
+
+    const userID = (await supabase.auth.getUser()).data.user?.id;
+    if (userID) {
+      router.refresh();
+      router.replace("/");
+    } else {
+      clearInputs();
+      setError({
+        status: true,
+        message: "email or password is wrong please try again",
+      });
+
+      setTimeout(() => {
+        clearError();
+      }, 5000);
+    }
 
     setTimeout(() => {
       setIsLoading(false);
@@ -38,8 +73,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
-          <div className="grid gap-2">
+        <div className="flex flex-col gap-2">
+          {error.status && <ErrorLabel message={error.message} />}
+          <div className="flex flex-col gap-2">
             <Input
               id="email"
               placeholder="name@example.com"
@@ -50,6 +86,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              required
             />
             <Input
               id="password"
@@ -61,6 +98,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              required
             />
           </div>
           <Button disabled={isLoading}>
@@ -88,5 +126,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         Github
       </Button>
     </div>
+  );
+}
+
+function ErrorLabel(error: ErrorProps) {
+  return (
+    <p className="rounded-md border border-red-500 bg-red-50 px-4 py-1 text-center text-xs text-red-500">
+      {error.message}
+    </p>
   );
 }
