@@ -49,7 +49,6 @@ export function EditProfile() {
       .eq("id", user?.id);
 
     setLoading(false);
-
     if (error) {
       alert(`something went wrong dude`);
     }
