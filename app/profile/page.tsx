@@ -32,7 +32,7 @@ export default async function page() {
 
   return (
     <div className="space-y-20">
-      <ProfileHeader userData={user} />
+      <ProfileHeader/>
       <ProfileMain blogsByUser={topicsByUser} />
     </div>
   );
