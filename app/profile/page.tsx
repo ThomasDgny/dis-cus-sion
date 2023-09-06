@@ -1,3 +1,4 @@
+import React from "react";
 import ProfileHeader from "@/components/profile/header/ProfileHeader";
 import ProfileMain from "@/components/profile/main/ProfileMain";
 import { Topics, User } from "@/types/Types";
@@ -5,9 +6,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 
-import React from "react";
-
-export default async function page({ params }: { params: { userID: string } }) {
+export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
@@ -15,25 +14,25 @@ export default async function page({ params }: { params: { userID: string } }) {
   } = await supabase.auth.getSession();
 
   const sessionUserID = session?.user.id ?? "";
-  const userParamID = params.userID;
 
   const { data: user } = await supabase
     .from("users")
     .select()
-    .eq("id", userParamID)
+    .eq("id", sessionUserID)
     .single();
 
+  
   const { data: blogs } = await supabase
     .from("topics")
     .select()
-    .eq("author_id", userParamID);
+    .eq("author_id", sessionUserID);
 
   const topicsByUser: Topics[] = blogs ?? [];
   if (!user) return null;
 
   return (
     <div className="space-y-20">
-      <ProfileHeader userData={user} sessionUserID={sessionUserID} />
+      <ProfileHeader userData={user} />
       <ProfileMain blogsByUser={topicsByUser} />
     </div>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
+import { BlogCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics } from "@/types/Types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function ProfileMain({

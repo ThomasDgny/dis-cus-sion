@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { Database } from "@/lib/database.type";
 import { UserUpdate } from "@/types/Types";
@@ -19,11 +20,13 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { FormEvent, useEffect, useState } from "react";
 
 export function EditProfile() {
-  const client = createClientComponentClient<Database>();
-  const { user, setUser } = useAuth();
   const [userName, setUserName] = useState<string | undefined>();
   const [bio, setBio] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
+
+  const client = createClientComponentClient<Database>();
+  const { user } = useAuth();
+  const { toast } = useToast();
 
   function userDataMount(data: any) {
     setUserName(data?.user_name ?? "no data found");
@@ -31,7 +34,9 @@ export function EditProfile() {
   }
 
   useEffect(() => {
+    console.log("loading...");
     userDataMount(user);
+    console.log("done!");
   }, [user]);
 
   async function handleUpdateProfile(event: FormEvent) {
@@ -50,9 +55,15 @@ export function EditProfile() {
 
     setLoading(false);
     if (error) {
-      alert(`something went wrong dude`);
+      toast({
+        variant: "destructive",
+        description: "Something went wrong.",
+      });
+      return null;
     }
-    // alert("saved succesfull");
+    toast({
+      description: "Your changes have been saved.",
+    });
   }
 
   return (

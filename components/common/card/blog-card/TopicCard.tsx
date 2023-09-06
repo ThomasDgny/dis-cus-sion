@@ -1,5 +1,4 @@
 import { TimeConverter } from "@/utils/TimeConverter";
-
 import {
   Card,
   CardContent,
@@ -11,7 +10,10 @@ import { Topics, User } from "@/types/Types";
 import Link from "next/link";
 import SaveButton from "./SaveButton";
 import DirectProfileButton from "./DirectProfileButton";
-import { supabaseClient } from "@/db/supabaseClient";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.type";
+import { cookies } from "next/headers";
+
 
 export async function BlogCard({
   category,
@@ -21,12 +23,15 @@ export async function BlogCard({
   id,
   author_id,
 }: Topics) {
-  
-  const { data: user } = await supabaseClient
+
+const supabase = createServerComponentClient<Database>({cookies})
+  const { data: user } = await supabase
     .from("users")
     .select()
     .eq("id", author_id)
     .single();
+
+  if (!user) return null;
 
   return (
     <Card className="cursor-pointer transition-all hover:bg-slate-100">
@@ -43,7 +48,7 @@ export async function BlogCard({
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
-            {user && <DirectProfileButton authorData={user} />}
+            <DirectProfileButton authorData={user} />
             &#x2022;
             <div className="flex items-center">{category}</div>
           </div>

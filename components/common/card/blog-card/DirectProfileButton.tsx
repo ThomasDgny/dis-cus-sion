@@ -3,21 +3,19 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/types/Types";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 export default function DirectProfileButton({
   authorData,
 }: {
   authorData: User;
 }) {
-  const route = useRouter();
   if (!authorData || authorData.user_name === null) return null;
-  
-  const { id, user_name } = authorData;
+
+  const { user_name } = authorData;
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    route.push(`/profile/${id}`);
+    console.log("clicked", user_name);
   };
 
   return (

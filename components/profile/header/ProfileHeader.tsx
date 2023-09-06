@@ -1,55 +1,15 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types/Types";
 import Image from "next/image";
 import ProfileHeaderActiveUserActions from "./profile-header-activeuser/ProfileHeaderActiveUserActions";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/lib/database.type";
+import { useAuth } from "@/context/AuthProvider";
 
-export default function ProfileHeader({
-  userData,
-  sessionUserID,
-}: {
-  userData: User;
-  sessionUserID: string;
-}) {
-  const client = createClientComponentClient<Database>();
-  const { bio, id, user_name, avatar } = userData;
-  const avatarFallback = user_name?.[0].toLocaleUpperCase();
-  const [user, setUser] = useState({
-    avatar: avatar,
-    bio: bio,
-    user_name: user_name,
-  });
+export default function ProfileHeader() {
+  const { user } = useAuth();
+  if (!user) return null;
 
-  useEffect(() => {
-    const channel = client
-      .channel("table-filter-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "users",
-          filter: `id=eq.${sessionUserID}`,
-        },
-        (payload) => {
-        const data  = payload.new
-          setUser({
-            user_name: data.user_name ,
-            bio: data.bio ,
-            avatar: data.avatar,
-          })
-       
-        })
-      .subscribe();
-
-    return () => {
-      client.removeChannel(channel);
-    };
-  }, [client, sessionUserID]);
+  const avatarFallback = user.user_name?.[0].toLocaleUpperCase();
 
   return (
     <header className="grid h-96 grid-cols-1 overflow-hidden md:grid-cols-2">
@@ -62,7 +22,7 @@ export default function ProfileHeader({
           <div>
             <h1 className="text-4xl font-bold">{user.user_name}</h1>
             <p className="mt-1 text-lg text-gray-600">{user.bio}</p>
-            {id === sessionUserID && <ProfileHeaderActiveUserActions />}
+             <ProfileHeaderActiveUserActions />
           </div>
         </div>
       </div>

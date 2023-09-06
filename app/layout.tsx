@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import AuthProvider from "@/context/AuthProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`px-4 md:px-16 ${poppins.className}`}>
         <AuthProvider>
+          <Toaster />
           <Navbar />
           {children}
         </AuthProvider>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BlogCard } from "@/components/common/card/blog-card/BlogCard";
+import { BlogCard } from "@/components/common/card/blog-card/TopicCard";
 
 import { Topics } from "@/types/Types";
 import { supabaseClient } from "@/db/supabaseClient";
@@ -8,7 +8,7 @@ export default async function HomeMain() {
   const { data, error } = await supabaseClient
     .from("topics")
     .select()
-    .limit(30)
+    .range(0,30)
     .order('timestamp', { ascending: false })
 
   console.log(error?.message);
