@@ -52,7 +52,7 @@ export function EditProfile() {
     const updates: UserUpdate = {
       user_name: userName,
       bio: bio,
-      avatar: "",
+      avatar: publicUrl ?? null,
     };
 
     const { error } = await supabase
