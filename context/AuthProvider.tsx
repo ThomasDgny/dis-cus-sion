@@ -48,7 +48,6 @@ export default function AuthProvider({
         },
         (payload) => {
           const data = payload.new;
-          console.log("context user updated", data);
           setUser({
             avatar: data.avatar,
             bio: data.bio,

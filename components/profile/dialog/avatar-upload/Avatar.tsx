@@ -21,7 +21,6 @@ export default function Avatar({
   const [avatarUrl, setAvatarUrl] = useState<User["avatar"]>(url);
   const [uploading, setUploading] = useState(false);
 
-
   useEffect(() => {
     async function downloadImage(path: string) {
       try {
@@ -73,27 +72,30 @@ export default function Avatar({
   };
 
   return (
-    <div className="col-span-3">
+    <div className="col-span-3 items-baseline gap-4">
       {avatarUrl ? (
         <Image
           width={size}
           height={size}
           src={avatarUrl}
           alt="Avatar"
-          className="avatar image mb-3 rounded-md"
+          className="avatar mb-3 rounded-md"
           style={{ height: size, width: size }}
         />
       ) : (
         <div
-          className="avatar no-image rounded-md bg-slate-200"
+          className="col-span-3 rounded-md bg-slate-200 mb-3"
           style={{ height: size, width: size }}
         />
       )}
       <div className="w-full">
         {uploading ? (
-          <span className="w-full px-3 py-2 text-sm border rounded-md">Uploading ...</span>
+          <span className="w-full rounded-md border px-3 py-2 text-sm">
+            Uploading ...
+          </span>
         ) : (
           <Input
+            className="col-span-3"
             type="file"
             id="single"
             accept="image/jpg, image/png, image/jpeg, image/gif"
