@@ -1,8 +1,6 @@
-import { Topics, User } from "@/types/Types";
 import { supabaseClient } from "@/db/supabaseClient";
 import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import Link from "next/link";
+import TopicAuthor from "@/components/topic/header/TopicAuthor";
 import TopicHeader from "@/components/topic/header/TopicHeader";
 
 export default async function page({
@@ -16,7 +14,6 @@ export default async function page({
     .select()
     .eq("id", blogID)
     .single();
-
 
   if (!blog) {
     return <div>No blog data found</div>;
@@ -33,14 +30,12 @@ export default async function page({
     return <div>No author data found</div>;
   }
   return (
-    <div className="flex flex-col items-center justify-between md:p-16">
+    <div className="flex flex-col items-center justify-between md:p-16 bg-slate-400">
       <div className="max-w-3xl space-y-10">
-        <TopicHeader authorData={author} />
-
+        <TopicAuthor authorData={author} />
+        {/* <TopicHeader /> */}
         <div>
-          <h1 className="text-4xl font-bold leading-[120%]">
-            {blog.title}
-          </h1>
+          <h1 className="text-4xl font-bold leading-[120%]">{blog.title}</h1>
           <p className="mt-5 text-xl text-muted-foreground">{blog.desc}</p>
         </div>
 

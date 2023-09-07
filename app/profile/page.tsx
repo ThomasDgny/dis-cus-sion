@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileHeader from "@/components/profile/header/ProfileHeader";
 import ProfileMain from "@/components/profile/main/ProfileMain";
-import { Topics, User } from "@/types/Types";
+import { Topics } from "@/types/Types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
@@ -21,7 +21,6 @@ export default async function page() {
     .eq("id", sessionUserID)
     .single();
 
-  
   const { data: blogs } = await supabase
     .from("topics")
     .select()

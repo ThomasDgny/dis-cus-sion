@@ -11,7 +11,7 @@ export default function DirectProfileButton({
 }) {
   if (!authorData || authorData.user_name === null) return null;
 
-  const { user_name } = authorData;
+  const { user_name , avatar } = authorData;
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -25,7 +25,7 @@ export default function DirectProfileButton({
       className="flex items-center gap-2 p-0"
     >
       <Avatar className="h-5 w-5">
-        {/* <AvatarImage src={userAvatar} alt={authorData.user_name} /> */}
+        <AvatarImage src={avatar ?? ""} alt={authorData.user_name} />
         <AvatarFallback>{user_name[0]}</AvatarFallback>
       </Avatar>
       <p className="font-medium hover:underline">{user_name}</p>

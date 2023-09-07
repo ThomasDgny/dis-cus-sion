@@ -18,26 +18,33 @@ import { Database } from "@/lib/database.type";
 import { UserUpdate } from "@/types/Types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { FormEvent, useEffect, useState } from "react";
+import Avatar from "./avatar-upload/Avatar";
 
 export function EditProfile() {
   const [userName, setUserName] = useState<string | undefined>();
   const [bio, setBio] = useState<string | undefined>();
+  const [avatar_url, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const client = createClientComponentClient<Database>();
+  const supabase = createClientComponentClient<Database>();
   const { user } = useAuth();
   const { toast } = useToast();
+  const MAGIC_AVATAR_URL = `https://nbuiqkkhjnhefvqmnprr.supabase.co/storage/v1/object/public/avatars/`;
+  const puplicUrl = `${MAGIC_AVATAR_URL}${avatar_url}`;
 
   function userDataMount(data: any) {
     setUserName(data?.user_name ?? "no data found");
     setBio(data?.bio ?? "no data found");
+    setAvatarUrl(data?.avatar ?? null)
   }
+
 
   useEffect(() => {
     console.log("loading...");
     userDataMount(user);
     console.log("done!");
   }, [user]);
+
 
   async function handleUpdateProfile(event: FormEvent) {
     event.preventDefault();
@@ -48,12 +55,13 @@ export function EditProfile() {
       avatar: "",
     };
 
-    const { error } = await client
+    const { error } = await supabase
       .from("users")
       .update(updates)
       .eq("id", user?.id);
 
     setLoading(false);
+
     if (error) {
       toast({
         variant: "destructive",
@@ -80,6 +88,19 @@ export function EditProfile() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="picture" className="text-right">
+              Picture
+            </Label>
+            <Avatar
+              uid={user!.id}
+              url={avatar_url}
+              size={100}
+              onUpload={(url) => {
+                setAvatarUrl(url);
+              }}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Username
             </Label>
@@ -89,12 +110,6 @@ export function EditProfile() {
               className="col-span-3"
               onChange={(e) => setUserName(e.target.value)}
             />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="picture" className="text-right">
-              Picture
-            </Label>
-            <Input id="picture" type="file" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="bio" className="text-right">
