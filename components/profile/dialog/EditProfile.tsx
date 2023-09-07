@@ -30,7 +30,7 @@ export function EditProfile() {
   const { user } = useAuth();
   const { toast } = useToast();
   const MAGIC_AVATAR_URL = `https://nbuiqkkhjnhefvqmnprr.supabase.co/storage/v1/object/public/avatars/`;
-  const puplicUrl = `${MAGIC_AVATAR_URL}${avatar_url}`;
+  const publicUrl = `${MAGIC_AVATAR_URL}${avatar_url}`;
 
   function userDataMount(data: any) {
     setUserName(data?.user_name ?? "no data found");
