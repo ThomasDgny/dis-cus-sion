@@ -6,14 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Topics, User } from "@/types/Types";
+import { Topics } from "@/types/Types";
 import Link from "next/link";
-import SaveButton from "./SaveButton";
-import DirectProfileButton from "./DirectProfileButton";
+import SaveButton from "./_components/SaveButton";
+import DirectProfileButton from "./_components/DirectProfileButton";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
-
 
 export async function BlogCard({
   category,
@@ -23,13 +22,19 @@ export async function BlogCard({
   id,
   author_id,
 }: Topics) {
-
-const supabase = createServerComponentClient<Database>({cookies})
+  const supabase = createServerComponentClient<Database>({ cookies });
   const { data: user } = await supabase
     .from("users")
     .select()
     .eq("id", author_id)
     .single();
+
+  const { data: blogs } = await supabase
+    .from("topics")
+    .select()
+    .eq("author_id", author_id);
+
+  const topicsByUser: Topics[] = blogs ?? [];
 
   if (!user) return null;
 
@@ -48,7 +53,7 @@ const supabase = createServerComponentClient<Database>({cookies})
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
-            <DirectProfileButton authorData={user} />
+            <DirectProfileButton authorData={user} topicsByUser={topicsByUser}/>
             &#x2022;
             <div className="flex items-center">{category}</div>
           </div>
