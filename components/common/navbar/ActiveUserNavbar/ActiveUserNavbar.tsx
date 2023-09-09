@@ -17,7 +17,7 @@ export default function ActiveUserNavbar() {
       <Link href={"/profile"} className="flex items-center gap-2">
         <h1 className="text-xl font-semibold">{user.user_name}</h1>
         <Avatar className="h-10 w-10">
-          <AvatarImage src={user.avatar ?? ""} alt="CU" />
+          <AvatarImage src={user.avatar ?? ""} className="object-cover" alt="CU" />
           <AvatarFallback>{avatarFallback ?? "?"}</AvatarFallback>
         </Avatar>
       </Link>

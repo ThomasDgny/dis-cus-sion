@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { Database } from "@/lib/database.type";
@@ -11,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export default function EditBio() {
   const supabase = createClientComponentClient<Database>();
-  const { user } = useAuth();
+  const { user, getSessionUserData } = useAuth();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,7 @@ export default function EditBio() {
       .update({
         bio: bio,
       })
-      .eq("id", user?.id);
+      .eq("id", user!.id);
 
     setLoading(false);
 
@@ -39,6 +38,7 @@ export default function EditBio() {
       });
       return null;
     }
+    getSessionUserData(user!.id);
     toast({
       description: "Your changes have been saved.",
     });
@@ -46,10 +46,7 @@ export default function EditBio() {
 
   return (
     <div>
-      <form
-        className="grid grid-cols-5 gap-4"
-        onSubmit={handleUpdateProfile}
-      >
+      <form className="grid grid-cols-5 gap-4" onSubmit={handleUpdateProfile}>
         <Label htmlFor="bio" className="text-right">
           Bio
         </Label>

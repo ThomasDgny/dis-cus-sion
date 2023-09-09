@@ -4,10 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import ProfileHeaderActiveUserActions from "./profile-header-activeuser/ProfileHeaderActiveUserActions";
 import { useAuth } from "@/context/AuthProvider";
+import Loading from "@/components/common/loading/loading";
 
 export default function ProfileHeader() {
   const { user } = useAuth();
-  if (!user) return null;
+  if (!user) return <Loading />;
 
   const avatarFallback = user.user_name?.[0].toLocaleUpperCase();
 
@@ -16,13 +17,13 @@ export default function ProfileHeader() {
       <div className="flex flex-col justify-center p-6 md:p-10">
         <div className="mb-4 flex space-x-4">
           <Avatar className="h-14 w-14">
-            <AvatarImage src={user.avatar ?? ""} alt="CU" />
+            <AvatarImage src={user.avatar ?? ""} className="object-cover" alt="CU" />
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-4xl font-bold">{user.user_name}</h1>
             <p className="mt-1 text-lg text-gray-600">{user.bio}</p>
-             <ProfileHeaderActiveUserActions />
+            <ProfileHeaderActiveUserActions />
           </div>
         </div>
       </div>

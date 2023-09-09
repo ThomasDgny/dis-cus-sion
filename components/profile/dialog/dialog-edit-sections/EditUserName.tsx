@@ -10,11 +10,13 @@ import React, { FormEvent, useState } from "react";
 
 export default function EditUserName() {
   const supabase = createClientComponentClient<Database>();
-  const { user } = useAuth();
+  const { user, getSessionUserData } = useAuth();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
-  const [userName, setUserName] = useState<string | undefined>(user?.user_name ?? "data not found");
+  const [userName, setUserName] = useState<string | undefined>(
+    user?.user_name ?? "data not found",
+  );
 
   async function handleUpdateProfile(event: FormEvent) {
     event.preventDefault();
@@ -36,6 +38,7 @@ export default function EditUserName() {
       });
       return null;
     }
+    getSessionUserData(user!.id);
     toast({
       description: "Your changes have been saved.",
     });

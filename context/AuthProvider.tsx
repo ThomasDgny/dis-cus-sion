@@ -9,6 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 type UserContext = {
   user: User | undefined;
   handleSignOut: () => void;
+  getSessionUserData: (userID: string) => void;
 };
 
 const AuthContext = createContext<UserContext | undefined>(undefined);
@@ -34,36 +35,6 @@ export default function AuthProvider({
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, supabase]);
-
-  useEffect(() => {
-    const channel = supabase
-      .channel("table-filter-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "users",
-          filter: `id=eq.${user?.id}`,
-        },
-        (payload) => {
-          const data = payload.new;
-          setUser({
-            avatar: data.avatar,
-            bio: data.bio,
-            email: data.email,
-            id: data.id,
-            timestamp: data.timestamp,
-            user_name: data.user_name,
-          });
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase, user?.id]);
 
   async function getSessionUserData(userID: string) {
     const { data } = await supabase
@@ -91,7 +62,7 @@ export default function AuthProvider({
   }
 
   return (
-    <AuthContext.Provider value={{ user, handleSignOut }}>
+    <AuthContext.Provider value={{ user, handleSignOut, getSessionUserData }}>
       {children}
     </AuthContext.Provider>
   );

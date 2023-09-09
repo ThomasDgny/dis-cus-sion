@@ -18,6 +18,9 @@ export default function DirectProfileButton({
     console.log("clicked", user_name);
   };
 
+
+ // dialog props ----> open={open} onOpenChange={setOpen}
+
   return (
     <Button
       variant={"link"}
@@ -25,7 +28,7 @@ export default function DirectProfileButton({
       className="flex items-center gap-2 p-0"
     >
       <Avatar className="h-5 w-5">
-        <AvatarImage src={avatar ?? ""} alt={authorData.user_name} />
+        <AvatarImage src={avatar ?? ""} className="object-cover" alt={authorData.user_name} />
         <AvatarFallback>{user_name[0]}</AvatarFallback>
       </Avatar>
       <p className="font-medium hover:underline">{user_name}</p>
