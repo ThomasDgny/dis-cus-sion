@@ -16,7 +16,7 @@ export default function TopicAuthor({ authorData }: { authorData: User }) {
         className="mb-4 flex items-center space-x-4 hover:underline"
       >
         <Avatar className="h-11 w-11">
-          <AvatarImage src={avatar ?? ""} alt="CU" />
+          <AvatarImage src={avatar ?? ""} className="object-cover" alt="CU" />
           <AvatarFallback>{avatarFallback}</AvatarFallback>
         </Avatar>
         <div>

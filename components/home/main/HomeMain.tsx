@@ -1,14 +1,16 @@
 import React from "react";
 import { BlogCard } from "@/components/common/card/blog-card/TopicCard";
-
 import { Topics } from "@/types/Types";
-import { supabaseClient } from "@/db/supabaseClient";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.type";
+import { cookies } from "next/headers";
 
 export default async function HomeMain() {
-  const { data, error } = await supabaseClient
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const { data, error } = await supabase
     .from("topics")
     .select()
-    .range(0,30)
+    .range(0,5)
     .order('timestamp', { ascending: false })
 
   console.log(error?.message);
