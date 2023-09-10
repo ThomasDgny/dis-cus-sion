@@ -4,12 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import ProfileHeaderActiveUserActions from "./profile-header-activeuser/ProfileHeaderActiveUserActions";
 import { useAuth } from "@/context/AuthProvider";
-import Loading from "@/components/common/loading/NavbarUserDirectButtonLoading";
+import ProfileHeaderLoading from "@/components/common/loading/ProfileHeaderLoading";
 
 export default function ProfileHeader() {
   const { user } = useAuth();
-  if (!user) return <Loading />;
 
+  if (!user) return <ProfileHeaderLoading />;
   const avatarFallback = user.user_name?.[0].toLocaleUpperCase();
 
   return (
