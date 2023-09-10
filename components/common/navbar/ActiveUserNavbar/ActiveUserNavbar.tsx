@@ -4,12 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NewTopicButton } from "../new-topic/NewTopicButton";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
-
+import NavbarUserDirectButtonLoading from "../../loading/NavbarUserDirectButtonLoading";
 
 export default function ActiveUserNavbar() {
   const { user } = useAuth();
-  if (!user) return null;
-
+  if (!user) return <NavbarUserDirectButtonLoading />;
   const avatarFallback = user?.user_name?.[0].toLocaleUpperCase();
 
   return (
@@ -17,7 +16,11 @@ export default function ActiveUserNavbar() {
       <Link href={"/profile"} className="flex items-center gap-2">
         <h1 className="text-xl font-semibold">{user.user_name}</h1>
         <Avatar className="h-10 w-10">
-          <AvatarImage src={user.avatar ?? ""} className="object-cover" alt="CU" />
+          <AvatarImage
+            src={user.avatar ?? ""}
+            className="object-cover"
+            alt="CU"
+          />
           <AvatarFallback>{avatarFallback ?? "?"}</AvatarFallback>
         </Avatar>
       </Link>

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import ProfileHeaderActiveUserActions from "./profile-header-activeuser/ProfileHeaderActiveUserActions";
 import { useAuth } from "@/context/AuthProvider";
-import Loading from "@/components/common/loading/loading";
+import Loading from "@/components/common/loading/NavbarUserDirectButtonLoading";
 
 export default function ProfileHeader() {
   const { user } = useAuth();
