@@ -1,12 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import ActiveUserNavbar from "./ActiveUserNavbar/ActiveUserNavbar";
-import InActiveUserNavbar from "./InActiveUserNavbar/InActiveUserNavbar";
+import ActiveUserNavbar from "./_components/ActiveUserNavbar/ActiveUserNavbar";
+import InActiveUserNavbar from "./_components/InActiveUserNavbar/InActiveUserNavbar";
 import Typography from "@/Typography/Typography";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
-import { User } from "@/types/Types";
 
 export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({ cookies });

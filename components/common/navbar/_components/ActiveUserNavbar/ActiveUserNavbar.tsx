@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NewTopicButton } from "../new-topic/NewTopicButton";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
-import NavbarUserDirectButtonLoading from "../../loading/NavbarUserDirectButtonLoading";
+import NavbarUserDirectButtonLoading from "../../../loading/NavbarUserDirectButtonLoading";
 
 export default function ActiveUserNavbar() {
   const { user } = useAuth();

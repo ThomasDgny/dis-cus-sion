@@ -2,11 +2,28 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { BookmarkIcon } from "@radix-ui/react-icons";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.type";
+import { useAuth } from "@/context/AuthProvider";
+import { useToast } from "@/components/ui/use-toast";
 
 function SaveButton({ cardID }: { cardID: string }) {
-  const handleBookmarkClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const supabase = createClientComponentClient<Database>();
+  const { user } = useAuth();
+  const toast = useToast();
+
+  const handleBookmarkClick = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     event.preventDefault();
     console.log(cardID);
+
+    const { data, error } = await supabase
+      .from("saved")
+      .insert([{ user_id: user!.id, topic_id: cardID }])
+      .select();
+    console.log(data);
+    console.log(error);
   };
 
   return (

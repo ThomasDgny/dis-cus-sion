@@ -21,18 +21,35 @@ export default async function page() {
     .eq("id", sessionUserID)
     .single();
 
-  const { data: blogs } = await supabase
+  const { data: topics } = await supabase
     .from("topics")
     .select()
     .eq("author_id", sessionUserID);
 
-  const topicsByUser: Topics[] = blogs ?? [];
+  const { data: saved } = await supabase
+    .from("saved")
+    .select("topic_id")
+    .eq("user_id", sessionUserID);
+
+  const savedTopicsId: string[] =
+    saved?.map((topic) => topic.topic_id ?? "") ?? [];
+
+  const { data: savedTopics } = await supabase
+    .from("topics")
+    .select()
+    .in("id", savedTopicsId);
+
+  const topicsByUser: Topics[] = topics ?? [];
+  const savedByUser: Topics[] = savedTopics ?? [];
   if (!user) return null;
 
   return (
     <div className="space-y-20">
-      <ProfileHeader/>
-      <ProfileMain blogsByUser={topicsByUser} />
+      <ProfileHeader />
+      <ProfileMain
+        blogsByUser={topicsByUser}
+        savedBlogsByUser={savedByUser}
+      />
     </div>
   );
 }
