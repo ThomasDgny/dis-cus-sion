@@ -9,10 +9,10 @@ import {
 import { Topics } from "@/types/Types";
 import Link from "next/link";
 import SaveButton from "./_components/SaveButton";
-import DirectProfileButton from "./_components/DirectProfileButton";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
+import TopicCardDisplayProfileButton from "./_components/TopicCardDisplayProfileButton";
 
 export async function BlogCard({
   category,
@@ -28,13 +28,6 @@ export async function BlogCard({
     .select()
     .eq("id", author_id)
     .single();
-
-  const { data: blogs } = await supabase
-    .from("topics")
-    .select()
-    .eq("author_id", author_id);
-
-  const topicsByUser: Topics[] = blogs ?? [];
 
   if (!user) return null;
 
@@ -53,7 +46,7 @@ export async function BlogCard({
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
-            <DirectProfileButton authorData={user} topicsByUser={topicsByUser}/>
+            <TopicCardDisplayProfileButton authorData={user} />
             &#x2022;
             <div className="flex items-center">{category}</div>
           </div>
