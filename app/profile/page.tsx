@@ -21,7 +21,7 @@ export default async function page() {
     .eq("id", sessionUserID)
     .single();
 
-  const { data: topics } = await supabase
+  const { data: topicsCreatedByUser } = await supabase
     .from("topics")
     .select()
     .eq("author_id", sessionUserID);
@@ -39,7 +39,7 @@ export default async function page() {
     .select()
     .in("id", savedTopicsId);
 
-  const topicsByUser: Topics[] = topics ?? [];
+  const topicsByUser: Topics[] = topicsCreatedByUser ?? [];
   const savedByUser: Topics[] = savedTopics ?? [];
   if (!user) return null;
 

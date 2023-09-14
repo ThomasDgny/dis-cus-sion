@@ -1,9 +1,9 @@
 import React from "react";
 import TopicAuthor from "@/components/topic/header/TopicAuthor";
-import TopicHeader from "@/components/topic/header/TopicHeader";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
+import { EditTopic } from "@/components/topic/dialog/EditTopic";
 
 export default async function page({
   params,
@@ -11,8 +11,8 @@ export default async function page({
   params: { topicID: string };
 }) {
   const supabase = createServerComponentClient<Database>({ cookies });
-
-  const topicID = params.topicID;
+  const currentUserID = (await supabase.auth.getUser()).data.user?.id;
+  const topicID: string = params.topicID;
   const { data: topic } = await supabase
     .from("topics")
     .select()
@@ -28,13 +28,14 @@ export default async function page({
     .single();
 
   if (!author) return <div>No author data found</div>;
-  
 
   return (
-    <div className="flex flex-col items-center justify-between bg-slate-100 rounded-md md:p-16">
-      <div className="max-w-3xl space-y-10">
-        <TopicAuthor authorData={author} />
-        {/* TODO: ad here update or delete it will be client side ----> <TopicHeader /> */}
+    <div className="flex flex-col items-center justify-between rounded-md bg-slate-50 md:p-16">
+      <div className="w-full max-w-3xl space-y-10">
+        <div className="flex items-center justify-between">
+          <TopicAuthor authorData={author} />
+          {currentUserID === author.id && <EditTopic topicData={topic} />}
+        </div>
         <div>
           <h1 className="text-4xl font-bold leading-[120%]">{topic.title}</h1>
           <p className="mt-5 text-xl text-muted-foreground">{topic.desc}</p>
