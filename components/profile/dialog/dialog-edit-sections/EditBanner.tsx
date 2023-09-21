@@ -63,7 +63,7 @@ export default function EditBanner() {
       return;
     }
     setLoading(true);
-    await uploadImage(user!.id, selectedFile, supabase, "profile");
+    await uploadImage(user!.id, selectedFile, supabase, "banner");
     await updateUserImgUrl(bannerUrl);
     getSessionUserData(user!.id);
     setLoading(false);
