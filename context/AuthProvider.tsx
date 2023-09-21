@@ -24,18 +24,6 @@ export default function AuthProvider({
   const router = useRouter();
   const { toast } = useToast();
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.access_token) return getSessionUserData(session.user.id);
-      router.refresh();
-    });
-
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, supabase]);
-
   async function getSessionUserData(userID: string) {
     const { data } = await supabase
       .from("users")
@@ -44,6 +32,24 @@ export default function AuthProvider({
       .single();
     setUser(data ?? undefined);
   }
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        await Promise.all([
+          getSessionUserData(session.user.id)
+        ]);
+      }
+      router.refresh()
+    })
+
+    return () => subscription.unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, supabase]);
+
+
 
   async function handleSignOut() {
     const { error } = await supabase.auth.signOut();
