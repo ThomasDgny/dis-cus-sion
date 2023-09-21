@@ -10,6 +10,7 @@ import {
 import EditUserName from "./dialog-edit-sections/EditUserName";
 import EditBio from "./dialog-edit-sections/EditBio";
 import EditAvatar from "./dialog-edit-sections/EditAvatar";
+import EditBanner from "./dialog-edit-sections/EditBanner";
 
 export function EditProfile() {
   return (
@@ -25,6 +26,7 @@ export function EditProfile() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
+          <EditBanner />
           <EditAvatar />
           <EditUserName />
           <EditBio />

@@ -15,7 +15,7 @@ export default function DisplayProfile({
 }) {
   const [open, setOpen] = useState<boolean>(false);
   if (!authorData || authorData.user_name === null) return null;
-  const { user_name, avatar } = authorData;
+  const { user_name, avatar, banner } = authorData;
 
   const handleDirectProfile = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -37,7 +37,7 @@ export default function DisplayProfile({
         className="sm:max-w-2xl"
         onClick={(event) => event.preventDefault()}
       >
-        <ProfileDialogHeader avatar={avatar ?? ""} user_name={user_name} />
+        <ProfileDialogHeader avatar={avatar ?? ""} user_name={user_name} banner={banner ?? ""}/>
         <div className="mt-12 h-64">
           <TopicCardTabs authorData={authorData} />
         </div>

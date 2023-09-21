@@ -77,6 +77,7 @@ export interface Database {
       users: {
         Row: {
           avatar: string | null
+          banner: string | null
           bio: string | null
           email: string | null
           id: string
@@ -85,6 +86,7 @@ export interface Database {
         }
         Insert: {
           avatar?: string | null
+          banner?: string | null
           bio?: string | null
           email?: string | null
           id?: string
@@ -93,6 +95,7 @@ export interface Database {
         }
         Update: {
           avatar?: string | null
+          banner?: string | null
           bio?: string | null
           email?: string | null
           id?: string

@@ -33,7 +33,7 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
   const handleCreateTopic = async (event: FormEvent) => {
     event.preventDefault();
     const { error } = await supabaseClient.from("topics").insert(topicData);
-    console.log(error?.hint);
+    console.log(error);
     setTitle("");
     setDescription("");
   };

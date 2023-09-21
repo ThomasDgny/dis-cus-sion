@@ -29,7 +29,9 @@ export default function ProfileHeader() {
       </div>
       <div className="hidden md:block">
         <Image
-          src={""}
+          src={user.banner ?? ""}
+          width={500}
+          height={500}
           alt="user image"
           className="h-96 w-full rounded-lg bg-slate-200 object-cover"
         />
