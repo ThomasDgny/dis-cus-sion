@@ -4,6 +4,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 import { EditTopic } from "@/components/topic/dialog/EditTopic";
+import ChatMain from "@/components/topic/main/ChatMain";
 
 export default async function page({
   params,
@@ -30,7 +31,7 @@ export default async function page({
   if (!author) return <div>No author data found</div>;
 
   return (
-    <div className="flex flex-col items-center justify-between rounded-md bg-slate-50 md:p-16">
+    <div className="flex flex-col items-center justify-between gap-10 rounded-md bg-slate-100/80 md:p-16">
       <div className="w-full max-w-3xl space-y-10">
         <div className="flex items-center justify-between">
           <TopicAuthor authorData={author} />
@@ -40,11 +41,8 @@ export default async function page({
           <h1 className="text-4xl font-bold leading-[120%]">{topic.title}</h1>
           <p className="mt-5 text-xl text-muted-foreground">{topic.desc}</p>
         </div>
-
-        {/* <div className="w-full border-y border-muted-foreground/30 py-2">
-          TODO: THIS COMPONENT WILL HAVE ACTIONS SUCH AS SAVE AND EDIT
-        </div> */}
       </div>
+      <ChatMain topicID={topicID}/>
     </div>
   );
 }
