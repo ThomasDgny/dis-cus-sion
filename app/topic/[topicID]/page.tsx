@@ -42,7 +42,7 @@ export default async function page({
           <p className="mt-5 text-xl text-muted-foreground">{topic.desc}</p>
         </div>
       </div>
-      <ChatMain topicID={topicID}/>
+      <ChatMain topicID={topicID} />
     </div>
   );
 }
