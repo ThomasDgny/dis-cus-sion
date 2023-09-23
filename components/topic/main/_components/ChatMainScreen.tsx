@@ -1,20 +1,13 @@
-import { Database } from "@/lib/database.type";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+
+import { Message } from "@/types/Types";
 import React from "react";
 
-interface SendMessageProps {
-  topicID: string;
+interface MessagesProps {
+  messages: Message[] | null
 }
 
-export default async function ChatMainScreen({ topicID }: SendMessageProps) {
-  const supabase = createServerComponentClient<Database>({ cookies });
-
-  let { data: messages, error } = await supabase
-    .from("messages")
-    .select("*")
-    .eq("topic_id", topicID);
-
+export default async function ChatMainScreen({ messages }: MessagesProps) {
+messages
   return (
     <div className="h-full bg-red-500">
       {messages?.map((item) => <p key={item.id}>{item.message}</p>)}
