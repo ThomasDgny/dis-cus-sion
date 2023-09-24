@@ -19,6 +19,7 @@ interface SendMessageProps {
 export default function SendMessage({ topicID }: SendMessageProps) {
   const [message, setMessage] = useState<string>("");
   const supabase = createClientComponentClient<Database>();
+  const [isTyping, setIsTyping] = useState<boolean>(false)
   const { user } = useAuth();
   if (!user) return null;
 
@@ -43,13 +44,18 @@ export default function SendMessage({ topicID }: SendMessageProps) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex gap-3 bg-slate-200 p-2">
+      <div>
+      {isTyping && <>{user.user_name} is typing...</>}
+      </div>
+      <form onSubmit={handleSubmit} className="flex gap-3 border-t p-2">
         <Input
           value={message}
           type="text"
           name="message"
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Send your message"
+          onFocus={()=> setIsTyping(true)}
+          onBlur={()=> setIsTyping(false)}
         />
         <Button type="submit"> Send</Button>
       </form>

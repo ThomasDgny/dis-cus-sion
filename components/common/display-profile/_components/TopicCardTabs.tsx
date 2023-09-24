@@ -5,7 +5,7 @@ import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Topics, User } from "@/types/Types";
 import Link from "next/link";
-import { TimeConverter } from "@/utils/TimeConverter";
+import { DateConverter } from "@/utils/TimeConverter";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 
@@ -44,7 +44,7 @@ export default function TopicCardTabs({ authorData }: { authorData: User }) {
           <div>
             <Label>Member Since</Label>
             <DialogDescription>
-              {TimeConverter(authorData.timestamp ?? "BC")}
+              {DateConverter(authorData.timestamp ?? "BC")}
             </DialogDescription>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { TimeConverter } from "@/utils/TimeConverter";
+import { DateConverter } from "@/utils/TimeConverter";
 import {
   Card,
   CardContent,
@@ -37,7 +37,7 @@ export async function BlogCard({
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
             <CardTitle>{title}</CardTitle>
-            <CardDescription>{TimeConverter(timestamp)}</CardDescription>
+            <CardDescription>{DateConverter(timestamp)}</CardDescription>
             <CardDescription>{desc}</CardDescription>
           </div>
           <div>

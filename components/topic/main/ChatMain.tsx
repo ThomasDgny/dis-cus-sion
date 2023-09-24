@@ -9,8 +9,8 @@ export default async function ChatMain({
   topicID: string;
 }) {
   return (
-    <div className="h-screen w-full rounded-md bg-slate-600 flex flex-col justify-between">
-      <ChatHeader />
+    <div className="h-screen w-full rounded-md border flex flex-col justify-between">
+      {/* <ChatHeader /> */}
       <ChatMainScreen topicID={topicID}/>
       <SendMessage topicID={topicID} />
     </div>
