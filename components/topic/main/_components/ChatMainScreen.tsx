@@ -15,7 +15,9 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     const { data: messages, error } = await supabaseClient
     .from("messages")
     .select("*")
-    .eq("topic_id", topicID);
+    .eq("topic_id", topicID)
+    .range(0, 49)
+    .order("created_at", { ascending: true })
     setMessages(messages)
 
     if (!messages) {
