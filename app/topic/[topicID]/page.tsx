@@ -31,7 +31,7 @@ export default async function page({
   if (!author) return <div>No author data found</div>;
 
   return (
-    <div className="flex flex-col items-center justify-between gap-10 rounded-md bg-slate-100/80 md:p-16">
+    <div className="flex flex-col items-center justify-between gap-10 rounded-md bg-slate-100/50 md:p-16">
       <div className="w-full max-w-3xl space-y-10">
         <div className="flex items-center justify-between">
           <TopicAuthor authorData={author} />

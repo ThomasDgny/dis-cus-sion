@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import { Database } from "@/lib/database.type";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { Disc2, Github } from "../../../../node_modules/lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -21,19 +21,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<ErrorProps>({
-    status: false,
-    message: null,
-  });
   const supabase = createClientComponentClient<Database>();
+  const { toast } = useToast();
   const router = useRouter();
-
-  const clearError = () => {
-    setError({
-      status: false,
-      message: null,
-    });
-  };
 
   const clearInputs = () => {
     setEmail("");
@@ -44,37 +34,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    const userID = (await supabase.auth.getUser()).data.user?.id;
-    if (userID) {
-      router.refresh();
-      router.replace("/");
-    } else {
-      clearInputs();
-      setError({
-        status: true,
-        message: "email or password is wrong please try again",
+    await supabase.auth
+      .signInWithPassword({
+        email,
+        password,
+      })
+      .then(({ data: { user }, error }) => {
+        if (error) {
+          toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: error.message,
+          });
+          clearInputs();
+          setIsLoading(false);
+        }
+        if (user) {
+          toast({ description: `Logged in as ${user.email}!` });
+          router.replace("/");
+        }
       });
-
-      setTimeout(() => {
-        clearError();
-      }, 5000);
-    }
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-2">
-          {error.status && <ErrorLabel message={error.message} />}
           <div className="flex flex-col gap-2">
             <Input
               id="email"

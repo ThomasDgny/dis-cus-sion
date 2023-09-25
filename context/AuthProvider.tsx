@@ -38,18 +38,15 @@ export default function AuthProvider({
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
-        await Promise.all([
-          getSessionUserData(session.user.id)
-        ]);
+        await Promise.all([getSessionUserData(session.user.id)]);
+        console.log(session.user.id);
       }
-      router.refresh()
-    })
+      router.refresh();
+    });
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, supabase]);
-
-
 
   async function handleSignOut() {
     const { error } = await supabase.auth.signOut();
