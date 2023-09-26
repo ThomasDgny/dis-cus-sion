@@ -7,7 +7,7 @@ export default function ProfileMain({
   savedBlogsByUser,
 }: {
   blogsByUser: Topics[];
-  savedBlogsByUser?: Topics[];
+  savedBlogsByUser: Topics[];
 }) {
   return (
     <main>

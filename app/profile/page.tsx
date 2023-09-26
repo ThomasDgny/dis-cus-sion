@@ -1,7 +1,6 @@
 import React from "react";
 import ProfileHeader from "@/components/profile/header/ProfileHeader";
 import ProfileMain from "@/components/profile/main/ProfileMain";
-import { Topics } from "@/types/Types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
@@ -15,41 +14,29 @@ export default async function page() {
 
   const sessionUserID = session?.user.id ?? "";
 
-  const { data: user } = await supabase
+  const { data: userData } = await supabase
     .from("users")
-    .select()
+    .select("user_name, bio, avatar, banner, topics(*), saved(topic_id)")
     .eq("id", sessionUserID)
     .single();
 
-  const { data: topicsCreatedByUser } = await supabase
+  if (!userData) return null;
+
+  const user = userData;
+  const topicsByUser = user.topics;
+  const savedTopicsIDs = user.saved.map((item) => item.topic_id);
+
+  const { data: savedTopicsData } = await supabase
     .from("topics")
     .select()
-    .eq("author_id", sessionUserID);
+    .in("id", savedTopicsIDs);
 
-  const { data: saved } = await supabase
-    .from("saved")
-    .select("topic_id")
-    .eq("user_id", sessionUserID);
-
-  const savedTopicsId: string[] =
-    saved?.map((topic) => topic.topic_id ?? "") ?? [];
-
-  const { data: savedTopics } = await supabase
-    .from("topics")
-    .select()
-    .in("id", savedTopicsId);
-
-  const topicsByUser: Topics[] = topicsCreatedByUser ?? [];
-  const savedByUser: Topics[] = savedTopics ?? [];
-  if (!user) return null;
+  const savedTopics = savedTopicsData || [];
 
   return (
     <div className="space-y-20">
       <ProfileHeader />
-      <ProfileMain
-        blogsByUser={topicsByUser}
-        savedBlogsByUser={savedByUser}
-      />
+      <ProfileMain blogsByUser={topicsByUser} savedBlogsByUser={savedTopics} />
     </div>
   );
 }

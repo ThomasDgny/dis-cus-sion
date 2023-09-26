@@ -1,14 +1,13 @@
 "use client";
-
-import React, { useState } from "react";
-
+import React, { FormEvent, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Database } from "@/lib/database.type";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Disc2, Github } from "../../../../node_modules/lucide-react";
+import { Disc2 } from "../../../../node_modules/lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -18,6 +17,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [user_name, setUser_name] = useState<string>("");
 
   const router = useRouter();
+  const { toast } = useToast();
   const supabase = createClientComponentClient<Database>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -26,38 +26,46 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setPassword("");
   }
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
+  async function insertUser(data: any) {
+    const userID = data.user.id;
+    await supabase.from("users").insert({
+      id: userID,
+      email: email.toLowerCase(),
+      user_name: user_name,
+      timestamp: new Date().toISOString(),
+    })
+  }
+
+  async function createAccount() {
     setIsLoading(true);
-
-    try {
-      const { data, error: authError } = await supabase.auth.signUp({
+    await supabase.auth
+      .signUp({
         email,
-        password
-      });
-
-      if (authError) {
-        console.error("Authentication error:", authError.message);
-      } else {
-        const userID = data.user?.id;
-        const { error } = await supabase
-          .from("users")
-          .insert({ id: userID, email: email, user_name: user_name });
-
-        if (error) {
-          console.error("User insertion error:", error.message);
-        } else {
-          clearInputs();
-          router.replace("/");
+        password,
+      })
+      .then(async ({ data }) => {
+        console.log("auth table", data);
+        if (data.user) {
+          await insertUser(data);
+          toast({ description: `${email}! Account created!` });
+          router.push("/");
+          setIsLoading(false);
         }
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    } finally {
-      setTimeout(() => {
+      })
+      .catch((error) => {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: error.message,
+        });
         setIsLoading(false);
-      }, 1000);
-    }
+        clearInputs();
+      });
+  }
+
+  async function onSubmit(event: FormEvent) {
+    event.preventDefault();
+    createAccount();
   }
 
   return (
@@ -75,6 +83,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               onChange={(e) => setUser_name(e.target.value)}
               value={user_name}
+              required
             />
             <Input
               id="email"
@@ -86,6 +95,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+              required
             />
             <Input
               id="password"
@@ -97,6 +107,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              required
             />
           </div>
           <Button disabled={isLoading} type="submit">
@@ -105,24 +116,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </Button>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Disc2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Github className="mr-2 h-4 w-4" />
-        )}{" "}
-        Github
-      </Button>
     </div>
   );
 }

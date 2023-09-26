@@ -10,8 +10,8 @@ import { cookies } from "next/headers";
 export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({ cookies });
 
-  const { data: user } = await supabase.auth.getUser();
-  const sessionUser = user.user?.id;
+  const user = (await supabase.auth.getSession()).data.session;
+  const sessionUser = user?.user.id;
 
   return (
     <div className="flex h-28 w-full items-center justify-between py-4">

@@ -14,19 +14,19 @@ export default async function page({
   const supabase = createServerComponentClient<Database>({ cookies });
   const currentUserID = (await supabase.auth.getUser()).data.user?.id;
   const topicID: string = params.topicID;
-  const { data: topic } = await supabase
+
+  // Use a single query to fetch both topic and author data
+  const { data: topicData, error } = await supabase
     .from("topics")
-    .select()
+    .select("*, author:users(*)")
     .eq("id", topicID)
     .single();
+  console.log(topicData);
 
-  if (!topic) return <div>No blog data found</div>;
+  if (error && !topicData) return <div>No blog data found</div>;
 
-  const { data: author } = await supabase
-    .from("users")
-    .select()
-    .eq("id", topic.author_id)
-    .single();
+  const topic = topicData;
+  const author = topic.author;
 
   if (!author) return <div>No author data found</div>;
 
@@ -35,7 +35,7 @@ export default async function page({
       <div className="w-full max-w-3xl space-y-10">
         <div className="flex items-center justify-between">
           <TopicAuthor authorData={author} />
-          {currentUserID === author.id && <EditTopic topicData={topic} />}
+          {currentUserID === author!.id && <EditTopic topicData={topic} />}
         </div>
         <div>
           <h1 className="text-4xl font-bold leading-[120%]">{topic.title}</h1>
