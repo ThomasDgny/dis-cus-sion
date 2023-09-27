@@ -70,6 +70,24 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            '.line-clamp-2': {
+              display: '-webkit-box',
+              '-webkit-box-orient': 'vertical',
+              '-webkit-line-clamp': 2,
+              overflow: 'hidden',
+            },
+            '.line-clamp-3': {
+              display: '-webkit-box',
+              '-webkit-box-orient': 'vertical',
+              '-webkit-line-clamp': 3,
+              overflow: 'hidden',
+            },
+          },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

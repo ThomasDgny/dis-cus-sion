@@ -11,7 +11,7 @@ export default async function HomeMain() {
   const { data, error } = await supabase
     .from("topics")
     .select()
-    .range(0, 5)
+    .range(0, 20)
     .order("timestamp", { ascending: false });
 
   console.log(error);

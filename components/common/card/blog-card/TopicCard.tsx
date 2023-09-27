@@ -32,13 +32,13 @@ export async function BlogCard({
   if (!user) return null;
 
   return (
-    <Card className="cursor-pointer transition-all hover:bg-slate-100">
-      <Link href={`/topic/${id}`}>
+    <Card className="cursor-pointer transition-all hover:bg-slate-100 h-64">
+      <Link href={`/topic/${id}`} className="flex flex-col justify-between h-full">
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
-            <CardTitle>{title}</CardTitle>
+            <CardTitle className="line-clamp-2 leading-8 text-xl">{title}</CardTitle>
             <CardDescription>{DateConverter(timestamp)}</CardDescription>
-            <CardDescription>{desc}</CardDescription>
+            <CardDescription className="line-clamp-2 ">{desc}</CardDescription>
           </div>
           <div>
             <SaveButton cardID={id} />

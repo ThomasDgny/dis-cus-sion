@@ -1,8 +1,7 @@
-"use client";
 import DisplayProfile from "@/components/common/display-profile/DisplayProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Topics, User } from "@/types/Types";
-import React, { useState } from "react";
+import { User } from "@/types/Types";
+
 
 export default function TopicCardDisplayProfileButton({
   authorData,
