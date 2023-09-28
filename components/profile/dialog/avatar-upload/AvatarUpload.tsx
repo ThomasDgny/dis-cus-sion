@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "../../../../node_modules/lucide-react";
 
-export default function Avatar({
+export default function AvatarUpload({
   selectedFile,
   setSelectedFile,
   isLoading,

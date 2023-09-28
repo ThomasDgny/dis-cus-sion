@@ -1,49 +1,87 @@
-import { SupabaseClient } from "@supabase/auth-helpers-nextjs";
+"use client";
+import { Database } from "@/lib/database.type";
+import { extractImageIdFromUrl } from "@/utils/extractImgIdFromUrl";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+const { v4: uuidv4 } = require("uuid");
+const supabase = createClientComponentClient<Database>();
 
-const deleteImage = async (
-  userId: string,
-  imageSection: "profile" | "banner",
-  supabase: SupabaseClient,
-) => {
-  const previousImagePath = `${userId}/${imageSection}/user`;
-  const { error } = await supabase.storage
-    .from("avatars")
-    .remove([previousImagePath]);
-  console.log(error, `deleteImage ERROR`);
-};
+interface ImageProps {
+  userId: string;
+  image: File | null;
+  imageSection: "profile" | "banner";
+  previousImageUrl: string | null;
+}
+interface uploadImageProps extends ImageProps {
+  newImageID?: string;
+}
 
-const upload = async (
-  image: File,
-  imageSection: "profile" | "banner",
-  supabase: SupabaseClient,
-  userId: string,
-) => {
-  const { error } = await supabase.storage
-    .from("avatars")
-    .upload(`${userId}/${imageSection}/user`, image);
-  if (error) {
-    console.log(error);
-    return;
+const deleteImage = async (props: uploadImageProps) => {
+  const previousImagePath = props.previousImageUrl;
+  if (previousImagePath) {
+    console.log("previousImagePath", previousImagePath);
+    const imageId = extractImageIdFromUrl(previousImagePath);
+    const imagePath = `${props.userId}/${props.imageSection}/${imageId}`;
+
+    if (imagePath) {
+      const { error } = await supabase.storage
+        .from("avatars")
+        .remove([imagePath]);
+      console.log(error, `deleteImage`);
+    }
   }
 };
 
-const getDownloadUrl = async (
-  userId: string,
-  imageSection: "profile" | "banner",
-  supabase: SupabaseClient,
-) => {
-  const imagePath = `${userId}/${imageSection}/user`;
-  const { data } = supabase.storage.from("avatars").getPublicUrl(imagePath);
-  return data.publicUrl;
+const upload = async (props: uploadImageProps) => {
+  const imagePath = `${props.userId}/${props.imageSection}/${props.newImageID}`;
+  console.log("imagePath upload", imagePath);
+  if (props.image) {
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(imagePath, props.image);
+    if (error) {
+      console.log(error);
+    }
+  }
 };
 
-export const uploadImage = async (
-  userId: string,
-  image: File,
-  supabase: SupabaseClient,
-  imageSection: "profile" | "banner",
-) => {
-  await deleteImage(userId, imageSection, supabase);
-  await upload(image, imageSection, supabase, userId);
-  await getDownloadUrl(userId, imageSection, supabase)
+const getDownloadUrl = async (props: uploadImageProps) => {
+  const imagePath = `${props.userId}/${props.imageSection}/${props.newImageID}`;
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("avatars").getPublicUrl(imagePath);
+  console.log("publicUrl", publicUrl);
+  if (publicUrl) {
+    const { error, data: uploaded } = await supabase
+      .from("users")
+      .update({ avatar: publicUrl })
+      .eq("id", props.userId);
+
+    console.log(uploaded);
+    if (error) {
+      console.log(error);
+    }
+  }
+};
+
+export const uploadImage = async ({
+  userId,
+  image,
+  imageSection,
+  previousImageUrl,
+}: ImageProps) => {
+  const uuid = uuidv4();
+
+  const uploadImageProps: uploadImageProps = {
+    userId: userId,
+    image: image,
+    imageSection: imageSection,
+    previousImageUrl: previousImageUrl,
+    newImageID : uuid
+  };
+
+  if (image) {
+    await deleteImage(uploadImageProps);
+    await upload(uploadImageProps);
+    await getDownloadUrl(uploadImageProps);
+  }
 };

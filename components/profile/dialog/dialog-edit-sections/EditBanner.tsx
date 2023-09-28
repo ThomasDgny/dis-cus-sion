@@ -6,7 +6,7 @@ import { Database } from "@/lib/database.type";
 import { Label } from "@/components/ui/label";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React, { FormEvent, useEffect, useState } from "react";
-import Avatar from "../avatar-upload/Avatar";
+import AvatarUpload from "../avatar-upload/AvatarUpload";
 import Image from "next/image";
 import { uploadImage } from "@/helpers/UploadProfileImage";
 
@@ -89,7 +89,7 @@ export default function EditBanner() {
               style={{ height: 100, width: 100 }}
             />
           )}
-          <Avatar
+          <AvatarUpload
             setSelectedFile={setSelectedFile}
             isLoading={loading}
             selectedFile={selectedFile}
