@@ -8,7 +8,7 @@ const supabase = createClientComponentClient<Database>();
 interface ImageProps {
   userId: string;
   image: File | null;
-  imageSection: "profile" | "banner";
+  imageSection: "avatar" | "banner";
   previousImageUrl: string | null;
 }
 interface uploadImageProps extends ImageProps {
@@ -18,7 +18,6 @@ interface uploadImageProps extends ImageProps {
 const deleteImage = async (props: uploadImageProps) => {
   const previousImagePath = props.previousImageUrl;
   if (previousImagePath) {
-    console.log("previousImagePath", previousImagePath);
     const imageId = extractImageIdFromUrl(previousImagePath);
     const imagePath = `${props.userId}/${props.imageSection}/${imageId}`;
 
@@ -50,10 +49,12 @@ const getDownloadUrl = async (props: uploadImageProps) => {
     data: { publicUrl },
   } = supabase.storage.from("avatars").getPublicUrl(imagePath);
   console.log("publicUrl", publicUrl);
+  const updateData: Record<string, string> = {};
+  updateData[props.imageSection] = publicUrl;
   if (publicUrl) {
     const { error, data: uploaded } = await supabase
       .from("users")
-      .update({ avatar: publicUrl })
+      .update(updateData)
       .eq("id", props.userId);
 
     console.log(uploaded);
@@ -76,7 +77,7 @@ export const uploadImage = async ({
     image: image,
     imageSection: imageSection,
     previousImageUrl: previousImageUrl,
-    newImageID : uuid
+    newImageID: uuid,
   };
 
   if (image) {

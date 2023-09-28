@@ -2,16 +2,20 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthProvider";
-import { Database } from "@/lib/database.type";
 import { Label } from "@/components/ui/label";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React, { FormEvent, useEffect, useState } from "react";
 import AvatarUpload from "../avatar-upload/AvatarUpload";
 import Image from "next/image";
 import { uploadImage } from "@/helpers/UploadProfileImage";
 
+interface uploadImageProps {
+  userId: string;
+  image: File | null;
+  imageSection: "avatar" | "banner";
+  previousImageUrl: string | null;
+}
+
 export default function EditBanner() {
-  const supabase = createClientComponentClient<Database>();
   const { user, getSessionUserData } = useAuth();
   const { toast } = useToast();
 
@@ -31,26 +35,11 @@ export default function EditBanner() {
     }
   }, [selectedFile]);
 
-  const updateUserImgUrl = async (publicUrl: string | null) => {
-    const { error } = await supabase
-      .from("users")
-      .update({
-        banner: publicUrl,
-      })
-      .eq("id", user?.id);
-
-    if (error) {
-      toast({
-        variant: "destructive",
-        description: "Something went wrong please try again.",
-      });
-      return;
-    } else {
-      setSelectedFile(null);
-      toast({
-        description: "Your changes have been saved.",
-      });
-    }
+  const uploadImageProps: uploadImageProps = {
+    userId: user!.id,
+    image: selectedFile,
+    imageSection: "banner",
+    previousImageUrl: user!.banner,
   };
 
   async function handleUpdateProfile(event: FormEvent) {
@@ -63,8 +52,8 @@ export default function EditBanner() {
       return;
     }
     setLoading(true);
-    await uploadImage(user!.id, selectedFile, supabase, "banner");
-    await updateUserImgUrl(bannerUrl);
+    await uploadImage(uploadImageProps);
+    setSelectedFile(null);
     getSessionUserData(user!.id);
     setLoading(false);
   }

@@ -11,7 +11,7 @@ import { uploadImage } from "@/helpers/UploadProfileImage";
 interface uploadImageProps {
   userId: string;
   image: File | null;
-  imageSection: "profile" | "banner";
+  imageSection: "avatar" | "banner";
   previousImageUrl: string | null;
 }
 
@@ -39,7 +39,7 @@ export default function EditAvatar() {
   const uploadImageProps: uploadImageProps = {
     userId: user!.id,
     image: selectedFile,
-    imageSection: "profile",
+    imageSection: "avatar",
     previousImageUrl: user!.avatar,
   };
 
