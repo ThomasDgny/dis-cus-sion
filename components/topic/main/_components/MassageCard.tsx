@@ -20,7 +20,7 @@ export default function MassageCard({
       ? "rounded-b-md rounded-l-md bg-blue-500 text-white"
       : "rounded-b-md rounded-r-md bg-slate-200 text-black";
 
-      const messageContainerStyle = user?.id === sender.id && "flex-row-reverse"
+  const messageContainerStyle = user?.id === sender.id && "flex-row-reverse";
 
   return (
     <div className={`flex gap-3 px-4 py-2 ${messageContainerStyle}`}>
@@ -28,14 +28,14 @@ export default function MassageCard({
         <DisplayProfile
           authorData={sender}
           triggerButtonContent={
-            <div className="flex gap-2">
+            <div className="flex gap-2 rounded-full border transition-all hover:shadow-lg">
               <Avatar className="h-10 w-10">
                 <AvatarImage
                   src={sender.avatar ?? ""}
                   className="object-cover"
                   alt="CU"
                 />
-                <AvatarFallback>{avatarFallback ?? "?"}</AvatarFallback>
+                <AvatarFallback>{avatarFallback}</AvatarFallback>
               </Avatar>
             </div>
           }
