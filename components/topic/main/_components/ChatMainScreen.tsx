@@ -56,7 +56,12 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
       .channel("custom-insert-channel")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages" },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `topic_id=eq.${topicID}`,
+        },
         (payload) => {
           setMessages((current) => [
             ...(current as MessageUserProps[]),
@@ -69,6 +74,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     return () => {
       supabaseClient.removeChannel(messagesChannel);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
