@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AccountVerifierWrapper from "@/components/common/verifier-wrapper/VerifierWrapper";
+import AuthPage from "@/components/auth/AuthPage";
 
 export const metadata: Metadata = {
   title: "dis·cus·sion",
@@ -11,5 +12,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <AccountVerifierWrapper>{children}</AccountVerifierWrapper>;
+  return (
+    <AccountVerifierWrapper>
+      <AuthPage>{children}</AuthPage>
+    </AccountVerifierWrapper>
+  );
 }
