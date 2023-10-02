@@ -15,13 +15,11 @@ export default async function page({
   const currentUserID = (await supabase.auth.getUser()).data.user?.id;
   const topicID: string = params.topicID;
 
-  // Use a single query to fetch both topic and author data
   const { data: topicData, error } = await supabase
     .from("topics")
     .select("*, author:users(*)")
     .eq("id", topicID)
     .single();
-  console.log(topicData);
 
   if (error && !topicData) return <div>No blog data found</div>;
 
@@ -31,7 +29,7 @@ export default async function page({
   if (!author) return <div>No author data found</div>;
 
   return (
-    <div className="flex flex-col items-center justify-between gap-10 rounded-md md:pt-16 md:px-16">
+    <div className="flex flex-col items-center justify-between gap-10 rounded-md md:px-16 md:pt-16">
       <div className="w-full max-w-3xl space-y-10">
         <div className="flex items-center justify-between">
           <TopicAuthor authorData={author} />

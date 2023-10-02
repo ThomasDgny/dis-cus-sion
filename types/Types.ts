@@ -10,3 +10,6 @@ export type Saved = Database["public"]["Tables"]["saved"]["Row"];
 
 export type UserUpdate = Database["public"]["Tables"]["users"]["Update"];
 
+export type ProfileCache = {
+    [userId: string]: User
+  }
