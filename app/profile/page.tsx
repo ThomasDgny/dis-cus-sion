@@ -4,6 +4,9 @@ import ProfileMain from "@/components/profile/main/ProfileMain";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
+import { Topics, User } from "@/types/Types";
+
+type CommonTopics = Topics & { users: User };
 
 export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -17,30 +20,27 @@ export default async function page() {
   const { data: userData } = await supabase
     .from("users")
     .select(
-      "user_name, bio, avatar, banner, topics(*,users(*)), saved(topic_id)",
+      "user_name, bio, avatar, banner, topics(*,users(*)), saved(topics(*,users(*)))",
     )
     .eq("id", sessionUserID)
     .single();
 
   if (!userData) return null;
-
+  //TODO : fix the typescript error here
   const user = userData;
-  const topicsByUser = user.topics;
-  const savedTopicsIDs = user.saved.map((item) => item.topic_id);
+  const topicsByUser: any[] = user.topics;
+  const savedTopicsData: any[] = user.saved.map((item) => item.topics);
 
-  const { data: savedTopicsData } = await supabase
-    .from("topics")
-    .select("*, users(*)")
-    .in("id", savedTopicsIDs);
-
-  console.log(savedTopicsData);
-
-  const savedTopics = savedTopicsData || [];
+  // console.log(savedTopicsData);
+  // console.log("user", user);
 
   return (
     <div className="space-y-20">
       <ProfileHeader />
-      <ProfileMain blogsByUser={topicsByUser} savedBlogsByUser={savedTopics} />
+      <ProfileMain
+        blogsByUser={topicsByUser}
+        savedBlogsByUser={savedTopicsData}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { BlogCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics, User } from "@/types/Types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+
 type CommonTopics = Topics & { users: User };
 
 export default function ProfileMain({
