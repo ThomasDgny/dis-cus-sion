@@ -6,37 +6,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Topics } from "@/types/Types";
+import { Topics, User } from "@/types/Types";
 import Link from "next/link";
 import SaveButton from "./_components/SaveButton";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/lib/database.type";
-import { cookies } from "next/headers";
 import TopicCardDisplayProfileButton from "./_components/TopicCardDisplayProfileButton";
 
-export async function BlogCard({
-  category,
-  desc,
-  title,
-  timestamp,
-  id,
-  author_id,
-}: Topics) {
-  const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: user } = await supabase
-    .from("users")
-    .select()
-    .eq("id", author_id)
-    .single();
+interface TopicCardProps {
+  topicData: Topics;
+  authorData: User | null
+}
 
-  if (!user) return null;
+export async function BlogCard({ topicData, authorData }: TopicCardProps) {
+  const { category, desc, id, timestamp, title } = topicData;
+  if (!authorData) return null;
 
   return (
-    <Card className="cursor-pointer transition-all hover:bg-slate-100 h-64">
-      <Link href={`/topic/${id}`} className="flex flex-col justify-between h-full">
+    <Card className="h-64 cursor-pointer transition-all hover:bg-slate-100">
+      <Link
+        href={`/topic/${id}`}
+        className="flex h-full flex-col justify-between"
+      >
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
-            <CardTitle className="line-clamp-2 leading-8 text-xl">{title}</CardTitle>
+            <CardTitle className="line-clamp-2 text-xl leading-8">
+              {title}
+            </CardTitle>
             <CardDescription>{DateConverter(timestamp)}</CardDescription>
             <CardDescription className="line-clamp-2 ">{desc}</CardDescription>
           </div>
@@ -46,7 +40,7 @@ export async function BlogCard({
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
-            <TopicCardDisplayProfileButton authorData={user} />
+            <TopicCardDisplayProfileButton authorData={authorData} />
             &#x2022;
             <div className="flex items-center">{category}</div>
           </div>
