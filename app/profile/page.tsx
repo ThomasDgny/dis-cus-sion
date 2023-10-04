@@ -16,7 +16,9 @@ export default async function page() {
 
   const { data: userData } = await supabase
     .from("users")
-    .select("user_name, bio, avatar, banner, topics(*), saved(topic_id)")
+    .select(
+      "user_name, bio, avatar, banner, topics(*,users(*)), saved(topic_id)",
+    )
     .eq("id", sessionUserID)
     .single();
 
@@ -28,8 +30,10 @@ export default async function page() {
 
   const { data: savedTopicsData } = await supabase
     .from("topics")
-    .select()
+    .select("*, users(*)")
     .in("id", savedTopicsIDs);
+
+  console.log(savedTopicsData);
 
   const savedTopics = savedTopicsData || [];
 
