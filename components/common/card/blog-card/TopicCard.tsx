@@ -21,10 +21,10 @@ export async function BlogCard({ topicData, authorData }: TopicCardProps) {
   if (!authorData) return null;
 
   return (
-    <Card className="h-64 cursor-pointer transition-all hover:bg-slate-100">
+    <Card className="h-64 cursor-pointer transition-all hover:bg-slate-100 flex flex-col justify-between">
       <Link
         href={`/topic/${id}`}
-        className="flex h-full flex-col justify-between"
+        className=""
       >
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
@@ -38,6 +38,7 @@ export async function BlogCard({ topicData, authorData }: TopicCardProps) {
             <SaveButton cardID={id} />
           </div>
         </CardHeader>
+        </Link>
         <CardContent>
           <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
             <TopicCardDisplayProfileButton authorData={authorData} />
@@ -45,7 +46,6 @@ export async function BlogCard({ topicData, authorData }: TopicCardProps) {
             <div className="flex items-center">{category}</div>
           </div>
         </CardContent>
-      </Link>
     </Card>
   );
 }
