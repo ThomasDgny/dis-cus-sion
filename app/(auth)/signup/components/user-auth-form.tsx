@@ -48,8 +48,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         if (data.user) {
           await insertUser(data);
           toast({ description: `${email}! Account created!` });
-          router.push("/");
-          setIsLoading(false);
+          router.replace("/");
         }
       })
       .catch((error) => {

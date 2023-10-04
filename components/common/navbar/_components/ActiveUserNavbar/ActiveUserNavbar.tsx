@@ -1,13 +1,25 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NewTopicButton } from "../new-topic/NewTopicButton";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
 import NavbarUserDirectButtonLoading from "../../../loading/NavbarUserDirectButtonLoading";
 
-export default function ActiveUserNavbar() {
-  const { user } = useAuth();
+interface ActiveUserNavbarProps {
+  currentUserID: string;
+}
+
+export default function ActiveUserNavbar({
+  currentUserID,
+}: ActiveUserNavbarProps) {
+  const { user, getSessionUserData } = useAuth();
+
+  useEffect(() => {
+    getSessionUserData(currentUserID);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUserID]);
+
   if (!user) return <NavbarUserDirectButtonLoading />;
   const avatarFallback = user?.user_name?.[0].toLocaleUpperCase();
 
