@@ -16,11 +16,14 @@ import { PlusIcon } from "@radix-ui/react-icons";
 
 import { FormEvent, useState } from "react";
 import { SelectCategory } from "./SelectCategory";
-import { supabaseClient } from "@/db/supabaseClient";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.type";
 
 export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  
+  const supabase = createClientComponentClient<Database>()
   if (!sessionUserID) return null;
 
   const topicData = {
@@ -32,7 +35,7 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
 
   const handleCreateTopic = async (event: FormEvent) => {
     event.preventDefault();
-    const { error } = await supabaseClient.from("topics").insert(topicData);
+    const { error } = await supabase.from("topics").insert(topicData);
     console.log(error);
     setTitle("");
     setDescription("");
