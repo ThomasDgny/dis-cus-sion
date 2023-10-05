@@ -5,6 +5,7 @@ import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 import { EditTopic } from "@/components/topic/dialog/EditTopic";
 import ChatMain from "@/components/topic/main/ChatMain";
+import { DateConverter } from "@/utils/TimeConverter";
 
 export default async function page({
   params,
@@ -35,9 +36,19 @@ export default async function page({
           <TopicAuthor authorData={author} />
           {currentUserID === author!.id && <EditTopic topicData={topic} />}
         </div>
+
         <div>
-          <h1 className="text-4xl font-bold leading-[120%] break-all">{topic.title}</h1>
-          <p className="mt-5 text-xl text-muted-foreground break-all">{topic.desc}</p>
+        <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
+          {DateConverter(topic.timestamp)}
+         <div>&#x2022;</div> 
+          <div className="flex items-center">{topic.category}</div>
+        </div>
+          <h1 className="break-all text-4xl font-bold leading-[120%]">
+            {topic.title}
+          </h1>
+          <p className="mt-5 break-all text-xl text-muted-foreground">
+            {topic.desc}
+          </p>
         </div>
       </div>
       <ChatMain topicID={topicID} />
