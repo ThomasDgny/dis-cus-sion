@@ -23,7 +23,7 @@ export default function TopicCardDisplayProfileButton({
             />
             <AvatarFallback>{user_name[0]}</AvatarFallback>
           </Avatar>
-          <p className="font-medium hover:underline">{user_name}</p>
+          <p className="font-medium hover:underline max-w-[120px] line-clamp-1 break-all">{user_name}</p>
         </>
       }
     />

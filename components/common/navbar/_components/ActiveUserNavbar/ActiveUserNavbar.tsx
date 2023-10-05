@@ -26,7 +26,7 @@ export default function ActiveUserNavbar({
   return (
     <div className="flex gap-3">
       <Link href={"/profile"} className="flex items-center gap-2">
-        <h1 className="text-xl font-semibold">{user.user_name}</h1>
+        <h1 className="text-xl font-semibold max-w-xs break-all line-clamp-1">{user.user_name}</h1>
         <Avatar className="h-10 w-10">
           <AvatarImage
             src={user.avatar ?? ""}

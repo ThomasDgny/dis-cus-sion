@@ -19,11 +19,22 @@ import { SelectCategory } from "./SelectCategory";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { useToast } from "@/components/ui/use-toast";
+import { z } from "zod";
 
 export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const titleSchema = z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title is too long (maximum 100 characters)");
+  const descriptionSchema = z
+    .string()
+    .min(1, "Description is required")
+    .max(500, "Description is too long (maximum 500 characters)");
+  const selectedCategorySchema = z.string().min(1, "Category is required");
 
   const { toast } = useToast();
 
@@ -35,19 +46,43 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
     setDescription("");
   }
 
-  const topicData = {
-    title: title,
-    desc: description,
-    category: selectedCategory,
-    author_id: sessionUserID,
-  };
-
   const handleCreateTopic = async (event: FormEvent) => {
     event.preventDefault();
-    const { error } = await supabase.from("topics").insert(topicData);
-    console.log(error);
-    toast({ description: `Topic "${title}" created.`, title: `Successful` });
-    clearInput();
+
+    try {
+      const validatedTitle = titleSchema.parse(title);
+      const validatedDescription = descriptionSchema.parse(description);
+      const validatedSelectedCategory =
+        selectedCategorySchema.parse(selectedCategory);
+
+      const topicData = {
+        title: validatedTitle,
+        desc: validatedDescription,
+        category: validatedSelectedCategory,
+        author_id: sessionUserID,
+      };
+
+      const { error } = await supabase.from("topics").insert(topicData);
+      console.log(error);
+      toast({
+        description: `Topic "${validatedTitle}" created.`,
+        title: `Successful`,
+      });
+      clearInput();
+    } catch (error) {
+      if (title.length > 100) {
+        toast({
+          variant: "destructive",
+          description: "Title is too long (maximum 100 characters)",
+        });
+      }
+      if (description.length > 500) {
+        toast({
+          variant: "destructive",
+          description: "Description is too long (maximum 500 characters)",
+        });
+      }
+    }
   };
 
   return (
@@ -73,14 +108,19 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
               <Label htmlFor="title" className="text-right">
                 Title
               </Label>
-              <Input
-                id="title"
-                value={title}
-                className="col-span-3"
-                placeholder="Title"
-                required
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <div className="col-span-3">
+                <span className="float-right text-xs text-gray-400">
+                  {title.length}/100
+                </span>
+                <Input
+                  id="title"
+                  value={title}
+                  className="col-span-3"
+                  placeholder="Title"
+                  required
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="category" className="text-right">
@@ -92,14 +132,19 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
               <Label htmlFor="description" className="text-right">
                 Description
               </Label>
-              <Textarea
-                id="description"
-                value={description}
-                className="col-span-3"
-                placeholder="Description"
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
+              <div className="col-span-3">
+                <span className="float-right text-xs text-gray-400">
+                  {description.length}/500
+                </span>
+                <Textarea
+                  id="description"
+                  value={description}
+                  className="col-span-3"
+                  placeholder="Description"
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </div>
             </div>
           </div>
           <DialogFooter>

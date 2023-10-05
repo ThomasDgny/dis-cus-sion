@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React, { FormEvent, useState } from "react";
 import { Topics } from "@/types/Types";
-import refresh from "../../actions/Refresh";
 
 export default function EditTopicTitle({ topicData }: { topicData: Topics }) {
   const supabase = createClientComponentClient<Database>();

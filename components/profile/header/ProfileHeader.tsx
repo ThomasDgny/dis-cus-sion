@@ -21,7 +21,7 @@ export default function ProfileHeader() {
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-4xl font-bold">{user.user_name}</h1>
+            <h1 className="text-4xl font-bold max-w-xs break-all line-clamp-1">{user.user_name}</h1>
             <p className="mt-1 text-lg text-gray-600">{user.bio}</p>
             <ProfileHeaderActiveUserActions />
           </div>

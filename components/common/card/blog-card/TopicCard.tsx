@@ -28,11 +28,11 @@ export async function BlogCard({ topicData, authorData }: TopicCardProps) {
       >
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">
-            <CardTitle className="line-clamp-2 text-xl leading-8">
+            <CardTitle className="line-clamp-2 break-all text-xl leading-8">
               {title}
             </CardTitle>
             <CardDescription>{DateConverter(timestamp)}</CardDescription>
-            <CardDescription className="line-clamp-2 ">{desc}</CardDescription>
+            <CardDescription className="line-clamp-2 break-all">{desc}</CardDescription>
           </div>
           <div>
             <SaveButton cardID={id} />
