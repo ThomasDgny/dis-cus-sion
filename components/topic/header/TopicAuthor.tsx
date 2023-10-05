@@ -8,17 +8,24 @@ export default function TopicAuthor({ authorData }: { authorData: User }) {
   const avatarFallback = user_name ? user_name[0].toLocaleUpperCase() : null;
 
   return (
-    <DisplayProfile authorData={authorData} triggerButtonContent={
-      <div className="flex gap-3 items-center">
-      <Avatar className="h-12 w-12">
-        <AvatarImage src={avatar ?? ""} className="object-cover" alt="CU" />
-        <AvatarFallback>{avatarFallback}</AvatarFallback>
-      </Avatar>
-      <div className="text-left">
-        <h1 className="font-medium">{user_name}</h1>
-        <p className="text-sm text-muted-foreground max-w-md truncate">{bio}</p>
-      </div>
-    </div>
-    }/>
+    <DisplayProfile
+      authorData={authorData}
+      triggerButtonContent={
+        <div className="flex items-center gap-3">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src={avatar ?? ""} className="object-cover" alt="CU" />
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
+          </Avatar>
+          <div className="text-left">
+            <h1 className="line-clamp-1 max-w-xs break-all font-medium">
+              {user_name}
+            </h1>
+            <p className="line-clamp-1 max-w-md truncate text-sm text-muted-foreground">
+              {bio}
+            </p>
+          </div>
+        </div>
+      }
+    />
   );
 }

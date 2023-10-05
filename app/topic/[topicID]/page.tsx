@@ -36,8 +36,8 @@ export default async function page({
           {currentUserID === author!.id && <EditTopic topicData={topic} />}
         </div>
         <div>
-          <h1 className="text-4xl font-bold leading-[120%]">{topic.title}</h1>
-          <p className="mt-5 text-xl text-muted-foreground">{topic.desc}</p>
+          <h1 className="text-4xl font-bold leading-[120%] break-all">{topic.title}</h1>
+          <p className="mt-5 text-xl text-muted-foreground break-all">{topic.desc}</p>
         </div>
       </div>
       <ChatMain topicID={topicID} />
