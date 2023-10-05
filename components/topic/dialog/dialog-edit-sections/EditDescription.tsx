@@ -37,7 +37,7 @@ export default function EditDescription({ topicData }: { topicData: Topics }) {
       });
       return null;
     }
-    // await refresh(topicData.id, setTitle);
+
     toast({
       description: "Your changes have been saved.",
     });
@@ -47,7 +47,7 @@ export default function EditDescription({ topicData }: { topicData: Topics }) {
     <div>
       <form className="grid grid-cols-5 gap-4" onSubmit={handleUpdateDescription}>
         <Label htmlFor="bio" className="text-right">
-          Bio
+         Description
         </Label>
         <Textarea
           required

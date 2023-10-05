@@ -18,18 +18,27 @@ import { FormEvent, useState } from "react";
 import { SelectCategory } from "./SelectCategory";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
+import { useToast } from "@/components/ui/use-toast";
 
 export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  
-  const supabase = createClientComponentClient<Database>()
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const { toast } = useToast();
+
+  const supabase = createClientComponentClient<Database>();
   if (!sessionUserID) return null;
+
+  function clearInput() {
+    setTitle("");
+    setDescription("");
+  }
 
   const topicData = {
     title: title,
     desc: description,
-    category: "Art",
+    category: selectedCategory,
     author_id: sessionUserID,
   };
 
@@ -37,8 +46,8 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
     event.preventDefault();
     const { error } = await supabase.from("topics").insert(topicData);
     console.log(error);
-    setTitle("");
-    setDescription("");
+    toast({ description: `Topic "${title}" created.`, title: `Successful` });
+    clearInput();
   };
 
   return (
@@ -58,42 +67,45 @@ export function NewTopicButton({ sessionUserID }: { sessionUserID: string }) {
             Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="title" className="text-right">
-              Title
-            </Label>
-            <Input
-              id="title"
-              value={title}
-              className="col-span-3"
-              placeholder="Title"
-              required
-              onChange={(e) => setTitle(e.target.value)}
-            />
+        <form onSubmit={handleCreateTopic}>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="title" className="text-right">
+                Title
+              </Label>
+              <Input
+                id="title"
+                value={title}
+                className="col-span-3"
+                placeholder="Title"
+                required
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="category" className="text-right">
+                Category
+              </Label>
+              <SelectCategory setCategory={setSelectedCategory} />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right">
+                Description
+              </Label>
+              <Textarea
+                id="description"
+                value={description}
+                className="col-span-3"
+                placeholder="Description"
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="category" className="text-right">
-              Category
-            </Label>
-            <SelectCategory />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
-            </Label>
-            <Textarea
-              id="description"
-              value={description}
-              className="col-span-3"
-              placeholder="Description"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button onClick={handleCreateTopic}>Create</Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit">Create</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

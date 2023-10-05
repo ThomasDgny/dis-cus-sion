@@ -1,5 +1,5 @@
 "use client";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import {
   Select,
@@ -12,15 +12,26 @@ import {
 } from "@/components/ui/select";
 import { category } from "@/mock/Category";
 
-export function SelectCategory() {
-  const [select, setSelect] = useState<SetStateAction<string>>("");
+interface SelectCategoryProps {
+  setCategory: Dispatch<SetStateAction<string>>;
+}
+
+export function SelectCategory({ setCategory }: SelectCategoryProps) {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+  };
+
+  useEffect(() => {
+    setCategory(selectedCategory);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
 
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue
-          placeholder="Select a category"
-        />
+    <Select onValueChange={handleCategoryChange} required>
+      <SelectTrigger className="col-span-3">
+        <SelectValue placeholder="Select a category" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup className="max-h-52 overflow-y-auto">

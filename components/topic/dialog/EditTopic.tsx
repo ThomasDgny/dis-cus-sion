@@ -11,6 +11,7 @@ import EditTopicTitle from "./dialog-edit-sections/EditTitle";
 import EditDescription from "./dialog-edit-sections/EditDescription";
 import { Topics } from "@/types/Types";
 import DeleteTopic from "./dialog-edit-sections/DeleteTopic";
+import { EditCategory } from "./dialog-edit-sections/EditCategory";
 
 export function EditTopic({ topicData }: { topicData: Topics }) {
   return (
@@ -27,6 +28,7 @@ export function EditTopic({ topicData }: { topicData: Topics }) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <EditTopicTitle topicData={topicData} />
+          <EditCategory topicData={topicData}/>
           <EditDescription topicData={topicData} />
           <DeleteTopic topicID={topicData.id} />
         </div>
