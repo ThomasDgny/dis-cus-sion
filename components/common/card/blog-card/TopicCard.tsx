@@ -16,7 +16,7 @@ interface TopicCardProps {
   authorData: User | null
 }
 
-export async function BlogCard({ topicData, authorData }: TopicCardProps) {
+export function BlogCard({ topicData, authorData }: TopicCardProps) {
   const { category, desc, id, timestamp, title } = topicData;
   if (!authorData) return null;
 

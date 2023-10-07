@@ -4,19 +4,20 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 import HomePageLoading from "@/components/common/loading/HomePageLoading";
-
-
+import { LoadMore } from "../actions/LoadMore";
 
 export default async function HomeMain() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data, error } = await supabase
+  const range: number = 9;
+  const { data, count, error } = await supabase
     .from("topics")
-    .select("*, users(*)")
-    .range(0, 20)
-    .order("timestamp", { ascending: false });
+    .select("*, users(*)", { count: "exact" })
+    .range(0, range)
+    .order("timestamp", { ascending: false })
 
   console.log(error);
   const topics = data ?? [];
+  const totalTopics: number | null = count;
   if (!topics || error) return <HomePageLoading />;
 
   return (
@@ -28,6 +29,7 @@ export default async function HomeMain() {
           </div>
         ))}
       </div>
+      <LoadMore range={range} totalTopics={totalTopics} />
     </div>
   );
 }
