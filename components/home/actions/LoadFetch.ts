@@ -15,6 +15,6 @@ export async function LoadFetch(from: number, to: number) {
     console.error("Error fetching data:", error);
     return null;
   }
-  console.log(newTopics);
+  // console.log(newTopics);
   return newTopics;
 }

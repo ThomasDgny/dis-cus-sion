@@ -15,20 +15,13 @@ export function LoadMore({ range, totalTopics }: LoadMoreProps) {
   const [topics, setTopics] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const { ref, inView } = useInView();
-
   const totalDataInDataBase = totalTopics ?? 0;
-  const dataLeftToFetch = totalDataInDataBase - range - 1;
 
   function getFromAndTo() {
     const itemPerPage = range;
-
     let from = page * itemPerPage;
     const to = from + itemPerPage;
-
-    if (page > 0) {
-      from += 1;
-    }
-
+    if (page > 0) from += 1;
     return { from, to };
   }
 
@@ -50,6 +43,9 @@ export function LoadMore({ range, totalTopics }: LoadMoreProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
+  const dataLeftToFetch = totalDataInDataBase - range - 1;
+  const isLoading = dataLeftToFetch - topics.length !== 0;
+
   return (
     <>
       <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
@@ -59,12 +55,12 @@ export function LoadMore({ range, totalTopics }: LoadMoreProps) {
           </div>
         ))}
       </div>
-      {dataLeftToFetch - topics.length !== 0 ? (
+      {isLoading ? (
         <div
           className="col-span-1 flex items-center justify-center p-4 sm:col-span-2 md:col-span-3"
           ref={ref}
         >
-          {inView && <span>LOADING...</span>}
+          <span>LOADING...</span>
         </div>
       ) : (
         <div>

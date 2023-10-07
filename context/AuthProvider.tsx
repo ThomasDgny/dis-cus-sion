@@ -32,7 +32,7 @@ export default function AuthProvider({
       .single();
     if (data) {
       setUser(data);
-      console.log("getSessionUserData", data);
+      // console.log("getSessionUserData", data);
     }
   }
 
@@ -42,7 +42,7 @@ export default function AuthProvider({
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         // await Promise.all([getSessionUserData(session.user.id)]);
-        console.log("IF onAuthStateChange", session.user.email);
+        console.log("Hello!", session.user.email);
       }
       router.refresh();
     });

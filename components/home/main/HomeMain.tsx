@@ -9,13 +9,15 @@ import { LoadMore } from "../actions/LoadMore";
 export default async function HomeMain() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const range: number = 9;
+
   const { data, count, error } = await supabase
     .from("topics")
     .select("*, users(*)", { count: "exact" })
     .range(0, range)
-    .order("timestamp", { ascending: false })
+    .order("timestamp", { ascending: false });
 
-  console.log(error);
+  if (error) console.log(error);
+
   const topics = data ?? [];
   const totalTopics: number | null = count;
   if (!topics || error) return <HomePageLoading />;
