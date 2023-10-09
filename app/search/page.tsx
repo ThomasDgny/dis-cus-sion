@@ -21,7 +21,7 @@ export default function Search() {
 
   useEffect(() => {
     async function search() {
-      if (selectQuery) {
+      if (selectQuery || selectCategory) {
         const filterParams: FilterEngineProps = {
           titleQuery: selectQuery,
           categoryQuery: selectCategory,

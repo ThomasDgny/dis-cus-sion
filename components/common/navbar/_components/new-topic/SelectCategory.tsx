@@ -37,7 +37,7 @@ export function SelectCategory({ setCategory }: SelectCategoryProps) {
         <SelectGroup className="max-h-52 overflow-y-auto">
           <SelectLabel>Category</SelectLabel>
           {category.map((item) => (
-            <SelectItem key={item.id} value={item.category_name}>
+            <SelectItem key={item.id} value={item.value}>
               {item.category_name}
             </SelectItem>
           ))}
