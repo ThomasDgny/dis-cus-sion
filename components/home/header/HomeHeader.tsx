@@ -1,22 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { category } from "@/mock/Category";
 import React from "react";
+import SearchForm from "../_components/SearchForm";
 
 export default function HomeHeader() {
   return (
-    <div className="w-full">
-      <div className="flex w-full gap-3 overflow-x-auto">
-        {category.map((item) => (
-          <Button
-            variant={"ghost"}
-            className="whitespace-nowrap py-1"
-            key={item.id}
-          >
-            {item.category_name}
-          </Button>
-        ))}
+    <div className="mb-10 flex w-full flex-col items-center justify-center gap-5">
+      <div className="w-full space-y-2 text-center">
+        <h1 className="text-3xl font-semibold">Search</h1>
+        <p className="text-slate-500">
+          The best search UI work, designs, illustrations, and graphic elements.
+        </p>
       </div>
+      <SearchForm />
     </div>
   );
 }

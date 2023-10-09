@@ -21,7 +21,7 @@ export default async function HomeMain() {
   const topics = data ?? [];
   const totalTopics: number | null = count;
   if (!topics || error) return <HomePageLoading />;
-
+ 
   return (
     <div>
       <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
