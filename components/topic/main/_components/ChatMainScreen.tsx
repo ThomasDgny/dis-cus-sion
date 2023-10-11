@@ -29,7 +29,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
       const newProfiles = Object.fromEntries(
         messages
           .map((message) => message.user)
-          .filter(Boolean) // is truthy
+          .filter(Boolean) 
           .map((user) => [user!.id, user!]),
       );
 
@@ -39,10 +39,6 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
       }));
 
       setMessages(messages);
-
-      if (messagesRef.current) {
-        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-      }
     }
   };
 

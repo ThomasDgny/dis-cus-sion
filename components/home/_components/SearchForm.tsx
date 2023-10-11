@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, XCircle } from "lucide-react";
-import { category } from "@/mock/Category";
+import { category } from "@/lib/Category";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import Link from "next/link";

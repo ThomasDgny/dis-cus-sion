@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { category } from "@/mock/Category";
+import { category } from "@/lib/Category";
 import { Topics } from "@/types/Types";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";

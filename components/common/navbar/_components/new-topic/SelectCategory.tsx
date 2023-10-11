@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { category } from "@/mock/Category";
+import { category } from "@/lib/Category";
 
 interface SelectCategoryProps {
   setCategory: Dispatch<SetStateAction<string>>;

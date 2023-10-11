@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { category } from "@/mock/Category";
+import { category } from "@/lib/Category";
 import React from "react";
 import SearchForm from "../_components/SearchForm";
 
