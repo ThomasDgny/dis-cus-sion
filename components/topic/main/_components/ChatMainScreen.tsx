@@ -15,9 +15,20 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
   const [messages, setMessages] = useState<Message[] | null>([]);
   const [profileCache, setProfileCache] = useState<ProfileCache>({});
   const [isLoading, setIsLoading] = useState(true);
-  const messagesRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const getData = async () => {
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const getData = async (topicID: string | null) => {
     const { data: messages, error } = await supabaseClient
       .from("messages")
       .select("*, user: users(*)")
@@ -29,7 +40,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
       const newProfiles = Object.fromEntries(
         messages
           .map((message) => message.user)
-          .filter(Boolean) 
+          .filter(Boolean)
           .map((user) => [user!.id, user!]),
       );
 
@@ -37,14 +48,12 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
         ...current,
         ...newProfiles,
       }));
-
       setMessages(messages);
     }
   };
 
   useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getData(topicID);
   }, [topicID]);
 
   useEffect(() => {
@@ -63,6 +72,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
             ...(current as MessageUserProps[]),
             payload.new as MessageUserProps,
           ]);
+          scrollToBottom(); // Scroll to the bottom when new messages are received
         },
       )
       .subscribe();
@@ -70,8 +80,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     return () => {
       supabaseClient.removeChannel(messagesChannel);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [topicID]);
 
   useEffect(() => {
     // Simulate data loading with a delay
@@ -79,10 +88,11 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
       setIsLoading(false);
     }, 1000);
   }, []);
+
   if (isLoading) return <ChatLoading />;
 
   return (
-    <div className="relative h-full overflow-y-auto" ref={messagesRef}>
+    <div className="relative h-full overflow-y-auto" ref={messagesContainerRef}>
       <ul className="flex flex-col justify-end space-y-1 p-4">
         {messages?.map((item, id) => (
           <MassageCard
