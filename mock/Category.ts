@@ -8,12 +8,12 @@ export const category: Category[] = [
   {
     id: 0,
     category_name: "All",
-    value: "",
+    value: "All",
   },
   {
     id: 1,
-    category_name: "Game",
-    value: "Game",
+    category_name: "Gaming",
+    value: "Gaming",
   },
   {
     id: 2,

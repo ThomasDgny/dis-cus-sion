@@ -13,7 +13,7 @@ export default function SearchForm() {
 
   async function handleSearch(event: FormEvent) {
     event.preventDefault();
-    const url = `/search?q=${search}`;
+    const url = `/search?q=${search}&category=All`;
     console.log(search);
 
     return router.push(url, {
@@ -43,13 +43,13 @@ export default function SearchForm() {
               Search
             </Button>
             {search.length > 0 && (
-              <Button
+              <Link
                 onClick={() => setSearch("")}
-                className="absolute right-5 top-[15%]"
-                variant={"ghost"}
+                href={`/search?q=`}
+                className="absolute right-5 top-[32%]"
               >
                 <XCircle className=" h-5 w-5 text-slate-500" />
-              </Button>
+              </Link>
             )}
           </div>
         </form>

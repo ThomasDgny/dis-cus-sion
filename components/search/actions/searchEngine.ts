@@ -15,8 +15,7 @@ export async function filterEngine(selectQuery: FilterEngineProps) {
 
   // Prepare queries for title and category
   const titleQuery = selectQuery.titleQuery?.trim() ?? "";
-  const categoryQuery = selectQuery.categoryQuery?.trim() ?? "";
-  console.log("categoryQuery", categoryQuery)
+  const categoryQuery = selectQuery.categoryQuery?.trim() ?? "All";
 
   // Define functions for querying the database
   const performQuery = async (field: string, query: string | null) => {
@@ -30,18 +29,32 @@ export async function filterEngine(selectQuery: FilterEngineProps) {
       .textSearch(field, query, {
         type: "websearch",
       });
-    console.log(data as CommonTopics[]);
+
     return data as CommonTopics[];
   };
 
-  // Perform queries for title and category in parallel
-  const [titleResults, categoryResults] = await Promise.all([
-    performQuery("title", titleQuery),
-    performQuery("category", categoryQuery),
-  ]);
+  let categoryResults: CommonTopics[] = [];
+  let titleResults: CommonTopics[] = [];
 
-  // Merge and deduplicate the results
-  const filterResult = [...titleResults, ...categoryResults];
+  if (categoryQuery === "All") {
+    titleResults = await performQuery("title", titleQuery); 
+  } else {
+    categoryResults = await performQuery("category", categoryQuery); 
+  }
+
+  const filterCategoryResults = categoryResults.filter((topic) => {
+    const query = titleQuery.toLowerCase();
+    const title = topic.title?.toLowerCase() || "";
+    const category = topic.category?.toLowerCase() || "";
+    const desc = topic.desc?.toLowerCase() || "";
+
+    return (
+      title.includes(query) || category.includes(query) || desc.includes(query)
+    );
+  });
+
+
+  const filterResult = [...titleResults, ...filterCategoryResults];
   const uniqueResults = [...new Set(filterResult)];
 
   return uniqueResults;
