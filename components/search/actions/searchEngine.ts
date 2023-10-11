@@ -13,11 +13,9 @@ type CommonTopics = Topics & { users: User };
 export async function filterEngine(selectQuery: FilterEngineProps) {
   const supabase = createServerComponentClient({ cookies });
 
-  // Prepare queries for title and category
   const titleQuery = selectQuery.titleQuery?.trim() ?? "";
   const categoryQuery = selectQuery.categoryQuery?.trim() ?? "All";
 
-  // Define functions for querying the database
   const performQuery = async (field: string, query: string | null) => {
     if (!query) {
       return [];
