@@ -38,7 +38,6 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
 
   useEffect(() => {
     getMessages(topicID, setProfileCache, setMessages);
-    scrollToBottom(messagesContainerRef);
   }, [topicID]);
 
   function handleNewMessage(
@@ -78,6 +77,13 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicID]);
+
+  useEffect(() => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      }
+  }, []);
+  
 
   useEffect(() => {
     // Simulate data loading with a delay
