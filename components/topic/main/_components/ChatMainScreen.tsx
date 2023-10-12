@@ -4,6 +4,12 @@ import { supabaseClient } from "@/db/supabaseClient";
 import { Message, ProfileCache, User } from "@/types/Types";
 import MassageCard from "./MassageCard";
 import ChatLoading from "@/components/common/loading/ChatLoading";
+import { useInView } from "react-intersection-observer";
+import { scrollToBottom } from "@/utils/scrollBottom";
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
+import { getMessages } from "../action/getMessages";
+import { Button } from "@/components/ui/button";
+import { ArrowDown } from "lucide-react";
 
 interface MessagesProps {
   topicID: string | null;
@@ -14,47 +20,41 @@ type MessageUserProps = Message | (null & { user: User });
 export default function ChatMainScreen({ topicID }: MessagesProps) {
   const [messages, setMessages] = useState<Message[] | null>([]);
   const [profileCache, setProfileCache] = useState<ProfileCache>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [unReadMessages, setUnReadMessages] = useState<number>(0);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollToBottom = () => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight
-    }
-  };
+  const { ref: messagesIsReadRef, inView } = useInView({
+    threshold: 0,
+  });
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const getData = async (topicID: string | null) => {
-    const { data: messages, error } = await supabaseClient
-      .from("messages")
-      .select("*, user: users(*)")
-      .eq("topic_id", topicID)
-      .range(0, 30)
-      .order("created_at");
-
-    if (messages) {
-      const newProfiles = Object.fromEntries(
-        messages
-          .map((message) => message.user)
-          .filter(Boolean)
-          .map((user) => [user!.id, user!]),
-      );
-
-      setProfileCache((current) => ({
-        ...current,
-        ...newProfiles,
-      }));
-      setMessages(messages);
+    if (inView) {
+      scrollToBottom(messagesContainerRef);
+      setUnReadMessages(0);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages, inView]);
 
   useEffect(() => {
-    getData(topicID);
+    getMessages(topicID, setProfileCache, setMessages);
+    scrollToBottom(messagesContainerRef);
   }, [topicID]);
+
+  function handleNewMessage(
+    payload: RealtimePostgresInsertPayload<{
+      [key: string]: any;
+    }>,
+    inView: boolean,
+  ) {
+    setMessages((current) => [
+      ...(current as MessageUserProps[]),
+      payload.new as MessageUserProps,
+    ]);
+    if (!inView) {
+      setUnReadMessages((prev) => prev + 1);
+    }
+  }
 
   useEffect(() => {
     const messagesChannel = supabaseClient
@@ -68,11 +68,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
           filter: `topic_id=eq.${topicID}`,
         },
         (payload) => {
-          setMessages((current) => [
-            ...(current as MessageUserProps[]),
-            payload.new as MessageUserProps,
-          ]);
-          scrollToBottom(); // Scroll to the bottom when new messages are received
+          handleNewMessage(payload, inView);
         },
       )
       .subscribe();
@@ -80,19 +76,31 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     return () => {
       supabaseClient.removeChannel(messagesChannel);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicID]);
 
   useEffect(() => {
     // Simulate data loading with a delay
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 500);
   }, []);
 
   if (isLoading) return <ChatLoading />;
 
   return (
     <div className="relative h-full overflow-y-auto" ref={messagesContainerRef}>
+      {!inView && unReadMessages > 0 && (
+        <div className="fixed bottom-16 z-50 flex w-full justify-center">
+          <Button
+            onClick={() => scrollToBottom(messagesContainerRef)}
+            className="rounded-full bg-blue-500 text-xs text-white shadow-lg"
+          >
+            {unReadMessages} Unread Messages
+            <ArrowDown className="ml-3 h-4 w-4" />
+          </Button>
+        </div>
+      )}
       <ul className="flex flex-col justify-end space-y-1 p-4">
         {messages?.map((item, id) => (
           <MassageCard
@@ -102,6 +110,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
             setProfileCache={setProfileCache}
           />
         ))}
+        <div className=" bg-red-500 h-3" ref={messagesIsReadRef} />
       </ul>
     </div>
   );
