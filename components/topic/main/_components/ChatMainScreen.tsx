@@ -20,7 +20,6 @@ type MessageUserProps = Message | (null & { user: User });
 export default function ChatMainScreen({ topicID }: MessagesProps) {
   const [messages, setMessages] = useState<Message[] | null>([]);
   const [profileCache, setProfileCache] = useState<ProfileCache>({});
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [unReadMessages, setUnReadMessages] = useState<number>(0);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -79,20 +78,8 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
   }, [topicID]);
 
   useEffect(() => {
-      if (messagesContainerRef.current) {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-      }
+    scrollToBottom(messagesContainerRef);
   }, []);
-  
-
-  useEffect(() => {
-    // Simulate data loading with a delay
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, []);
-
-  if (isLoading) return <ChatLoading />;
 
   return (
     <div className="relative h-full overflow-y-auto" ref={messagesContainerRef}>
