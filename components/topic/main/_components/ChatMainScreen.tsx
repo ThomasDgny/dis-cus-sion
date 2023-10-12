@@ -36,7 +36,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
   }, [messages, inView]);
 
   useEffect(() => {
-    getMessages(topicID, setProfileCache, setMessages);
+    
   }, [topicID]);
 
   function handleNewMessage(
@@ -55,6 +55,8 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
   }
 
   useEffect(() => {
+    getMessages(topicID, setProfileCache, setMessages);
+    
     const messagesChannel = supabaseClient
       .channel("custom-insert-channel")
       .on(
