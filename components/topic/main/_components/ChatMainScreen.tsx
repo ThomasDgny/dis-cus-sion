@@ -110,7 +110,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
             setProfileCache={setProfileCache}
           />
         ))}
-        <div className=" bg-red-500 h-3" ref={messagesIsReadRef} />
+        <div className="sr-only" ref={messagesIsReadRef} />
       </ul>
     </div>
   );
