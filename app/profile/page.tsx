@@ -31,9 +31,6 @@ export default async function page() {
   const topicsByUser: any[] = user.topics;
   const savedTopicsData: any[] = user.saved.map((item) => item.topics);
 
-  // console.log(savedTopicsData);
-  // console.log("user", user);
-
   return (
     <div className="space-y-20">
       <ProfileHeader />

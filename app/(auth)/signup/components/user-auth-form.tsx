@@ -1,59 +1,30 @@
+"use client";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Database } from "@/lib/database.type";
 import EmailInput from "@/components/auth/_components/EmailInput";
 import PasswordInput from "@/components/auth/_components/PasswordInput";
 import SubmitButton from "@/components/auth/_components/SubmitButton";
-import { cookies } from "next/headers";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { redirect } from "next/navigation";
 import UserNameInput from "@/components/auth/_components/UserNameInput";
+import { useToast } from "@/components/ui/use-toast";
+import { handleSignUp } from "@/components/auth/actions/signup-auth-action";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-// TODO: ERROR HANDLE MESSAGE ADD AND ZOD
-
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  async function onSubmit(formData: FormData) {
-    "use server";
-    const supabase = createServerActionClient<Database>({ cookies });
-    const user_name = String(formData.get("username"));
-    const email = String(formData.get("email"));
-    const password = String(formData.get("password"));
+  const { toast } = useToast();
 
-    async function insertUser(data: any) {
-      const userID = data.user.id;
-      await supabase.from("users").insert({
-        id: userID,
-        email: email.toLowerCase(),
-        user_name: user_name,
-        timestamp: new Date().toISOString(),
-      });
+  async function handleSignUpClient(formData: FormData) {
+    const result = await handleSignUp(formData);
+    if (result.user?.id) {
+      toast({ description: `Welcome! ${result.user?.email}` });
+    } else {
+      toast({ variant: "destructive", description: result.error });
     }
-
-    await supabase.auth
-      .signUp({
-        email,
-        password,
-      })
-      .then(async ({ data, error }) => {
-        console.log("auth table", data);
-        if (data.user) {
-          await insertUser(data);
-          redirect("/");
-        } else {
-          
-          console.log(error);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form action={onSubmit}>
+      <form action={handleSignUpClient}>
         <div className="grid gap-2">
           <div className="grid gap-2">
             <UserNameInput />
