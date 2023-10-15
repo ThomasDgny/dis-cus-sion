@@ -45,7 +45,7 @@ export async function handleSignUp(formData: FormData) {
 
   if (signUpUser.error) {
     return {
-      error: "Email or password is wrong",
+      error: "This email address has been taken",
     };
   } else {
     const user = signUpUser.data.user ?? null;
