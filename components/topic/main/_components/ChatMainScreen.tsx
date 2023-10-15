@@ -3,13 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { supabaseClient } from "@/db/supabaseClient";
 import { Message, ProfileCache, User } from "@/types/Types";
 import MassageCard from "./MassageCard";
-import ChatLoading from "@/components/common/loading/ChatLoading";
 import { useInView } from "react-intersection-observer";
 import { scrollToBottom } from "@/utils/scrollBottom";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { getMessages } from "../action/getMessages";
+import { getMessages } from "../../action/get-messages";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { error } from "console";
 
 interface MessagesProps {
   topicID: string | null;
@@ -22,6 +23,7 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
   const [profileCache, setProfileCache] = useState<ProfileCache>({});
   const [unReadMessages, setUnReadMessages] = useState<number>(0);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const { toast } = useToast();
 
   const { ref: messagesIsReadRef, inView } = useInView({
     threshold: 0,
@@ -34,10 +36,6 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, inView]);
-
-  useEffect(() => {
-    
-  }, [topicID]);
 
   function handleNewMessage(
     payload: RealtimePostgresInsertPayload<{
@@ -54,9 +52,25 @@ export default function ChatMainScreen({ topicID }: MessagesProps) {
     }
   }
 
+  async function getInitialMessages() {
+    const result = await getMessages(topicID);
+
+    if (result.error) {
+      toast({ variant: "destructive", description: result.error });
+    }
+
+    if (result?.messages) {
+      setProfileCache((current) => ({
+        ...current,
+        ...result.newProfiles,
+      }));
+      setMessages(result.messages);
+    }
+  }
+
   useEffect(() => {
-    getMessages(topicID, setProfileCache, setMessages);
-    
+    getInitialMessages();
+
     const messagesChannel = supabaseClient
       .channel("custom-insert-channel")
       .on(

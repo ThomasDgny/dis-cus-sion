@@ -1,55 +1,35 @@
 "use client";
-import React, { useState, FormEvent } from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAuth } from "@/context/AuthProvider";
-import { Database } from "@/lib/database.type";
 import { Button } from "@/components/ui/button";
-
-interface CurrentMessageProps {
-  message: string;
-  sender_id: string;
-  topic_id: string;
-}
+import { handleSendMessage } from "../../action/send-message";
+import { useToast } from "@/components/ui/use-toast";
 
 interface SendMessageProps {
   topicID: string;
 }
 
 export default function SendMessage({ topicID }: SendMessageProps) {
-  const [message, setMessage] = useState<string>("");
-  const supabase = createClientComponentClient<Database>();
   const { user } = useAuth();
+  const { toast } = useToast();
   if (!user) return null;
 
-  const currentMessage: CurrentMessageProps = {
-    message,
-    sender_id: user.id,
-    topic_id: topicID,
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (message.trim().length === 0) return;
-
-    const { error } = await supabase.from("messages").insert(currentMessage);
-
-    if (error) {
-      console.error("Error sending message:", error);
-    } else {
-      setMessage("");
+  const handleSubmit = async (formData: FormData) => {
+    const result = await handleSendMessage(formData, user.id, topicID);
+    if (result?.error) {
+      toast({ variant: "destructive", description: result.error });
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex gap-3 border-t p-2">
+      <form action={handleSubmit} className="flex gap-3 border-t p-2">
         <Input
-          value={message}
           type="text"
           name="message"
-          onChange={(e) => setMessage(e.target.value)}
           placeholder="Send your message"
+          required
         />
         <Button type="submit"> Send</Button>
       </form>
