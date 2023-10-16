@@ -7,8 +7,8 @@ export const searchSchema = z
 
 export const userBio = z
   .string()
-  .min(0, { message: "This field has to be filled." })
-  .max(250, { message: "Your bio cannot be more than 250 characters" });
+  .min(0, "This field has to be filled.")
+  .max(250, "Your bio cannot be more than 250 characters");
 
 export const signInFormSchema = z.object({
   email: z
@@ -20,12 +20,11 @@ export const signInFormSchema = z.object({
     .min(6, { message: "Password must be at least 8 characters long" }),
 });
 
-
 export const signUpFormSchema = z.object({
   name: z
-  .string()
-  .min(1, { message: "This field has to be filled." })
-  .max(30, { message: "Your user name cannot be more than 30 characters" }),
+    .string()
+    .min(1, { message: "This field has to be filled." })
+    .max(20, { message: "Your user name cannot be more than 20 characters" }),
   email: z
     .string()
     .min(1, { message: "This field has to be filled." })
@@ -34,4 +33,3 @@ export const signUpFormSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 8 characters long" }),
 });
-
