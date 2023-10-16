@@ -56,13 +56,15 @@ export default function SearchForm() {
       </div>
       <div className="flex w-full gap-3 overflow-x-auto">
         {category.map((item) => (
-          <Link
-            href={`/search?q=${search}&category=${item.value}`}
+          <Button
+            onClick={() =>
+              router.push(`/search?q=${search}&category=${item.value}`)
+            }
             className={`whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-slate-100`}
             key={item.id}
           >
             {item.category_name}
-          </Link>
+          </Button>
         ))}
       </div>
     </div>

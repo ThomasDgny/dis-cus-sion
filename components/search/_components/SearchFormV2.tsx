@@ -69,7 +69,6 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
               router.push(`/search?q=${search}&category=${item.value}`)
             }
             variant={"ghost"}
-            // href={`/search?q=${search}&category=${item.value}`}
             className={`whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-slate-100 ${
               item.value === queries?.category && "bg-blue-500 text-white"
             }`}
