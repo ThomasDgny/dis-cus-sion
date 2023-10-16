@@ -4,7 +4,7 @@ import { HomeTopics } from "../_components/HomeTopics";
 import { getTopics } from "../actions/getTopics";
 
 export default async function HomeMain() {
-  const range: number = 9;
+  const range: number = 14;
   const topics = await getTopics(0, range);
 
   if (!topics?.totalTopics) return <HomePageLoading />;

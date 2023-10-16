@@ -25,21 +25,21 @@ export function HomeTopics({ range, totalTopics, prevTopics }: LoadMoreProps) {
     const { from, to } = pagination(range, page);
     const newTopics = await getTopics(from, to);
     setPage((prev) => prev + 1);
-    setTopics((prevTopics: Topics[]) => [
-      ...prevTopics,
-      ...(newTopics?.topics as Topics[]),
-    ]);
+
+    if (newTopics?.topics) {
+      setTopics((prevTopics: Topics[]) => [
+        ...prevTopics,
+        ...(newTopics.topics as Topics[]),
+      ]);
+    }
   };
 
   useEffect(() => {
-    if (inView) {
-      loadMoreTopics();
-    }
+    if (inView) loadMoreTopics();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
-  const dataLeftToFetch = totalDataInDataBase - range - 1;
-  const isLoading = dataLeftToFetch - topics.length !== 0;
+  const isLoading = topics.length !== totalDataInDataBase;
 
   return (
     <>
