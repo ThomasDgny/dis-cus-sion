@@ -13,7 +13,7 @@ export const userBio = z
   export const userName = z
   .string()
   .min(0, "This field has to be filled.")
-  .max(20, "Your user name cannot be more than 220 characters");
+  .max(20, "Your user name cannot be more than 20 characters");
 
 
 export const signInFormSchema = z.object({
