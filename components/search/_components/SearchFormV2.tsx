@@ -22,7 +22,6 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
 
   async function handleSearch(event: FormEvent) {
     event.preventDefault();
-    console.log(search);
     const url = `/search?q=${search}&category=${queries?.category}`;
 
     return router.push(url, {
@@ -65,15 +64,19 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
       </div>
       <div className="flex w-full gap-3 overflow-x-auto">
         {category.map((item) => (
-          <Link
-            href={`/search?q=${search}&category=${item.value}`}
+          <Button
+            onClick={() =>
+              router.push(`/search?q=${search}&category=${item.value}`)
+            }
+            variant={"ghost"}
+            // href={`/search?q=${search}&category=${item.value}`}
             className={`whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-slate-100 ${
               item.value === queries?.category && "bg-blue-500 text-white"
             }`}
             key={item.id}
           >
             {item.category_name}
-          </Link>
+          </Button>
         ))}
       </div>
     </div>
