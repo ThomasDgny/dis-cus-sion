@@ -1,67 +1,54 @@
 "use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthProvider";
-import { Database } from "@/lib/database.type";
 import { Label } from "@/components/ui/label";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import React, { FormEvent, useState } from "react";
+import { updateUserName } from "../../action/profile-name-update";
+import { experimental_useFormStatus } from "react-dom";
 
 export default function EditUserName() {
-  const supabase = createClientComponentClient<Database>();
   const { user, getSessionUserData } = useAuth();
+  const { pending } = experimental_useFormStatus();
   const { toast } = useToast();
+  const userName: string | null = user?.user_name ?? "";
 
-  const [loading, setLoading] = useState(false);
-  const [userName, setUserName] = useState<string | undefined>(
-    user?.user_name ?? "data not found",
-  );
+  async function handleUpdateProfile(formData: FormData) {
+    const result = await updateUserName(user!.id, formData);
 
-  async function handleUpdateProfile(event: FormEvent) {
-    event.preventDefault();
-    setLoading(true);
-
-    const { error } = await supabase
-      .from("users")
-      .update({
-        user_name: userName,
-      })
-      .eq("id", user?.id);
-
-    setLoading(false);
-
-    if (error) {
+    if (result?.error) {
       toast({
         variant: "destructive",
-        description: "Something went wrong.",
+        description: result.error,
       });
-      return null;
+    } else {
+      getSessionUserData(user!.id);
+      toast({
+        description: "Your changes have been saved.",
+      });
     }
-    getSessionUserData(user!.id);
-    toast({
-      description: "Your changes have been saved.",
-    });
   }
 
   return (
     <div>
       <form
         className="grid grid-cols-5 items-center gap-4"
-        onSubmit={handleUpdateProfile}
+        action={handleUpdateProfile}
       >
         <Label htmlFor="name" className="text-right">
           Username
         </Label>
         <Input
+          name="name"
           id="name"
-          value={userName}
+          defaultValue={userName}
           className="col-span-3"
-          onChange={(e) => setUserName(e.target.value)}
+          disabled={pending}
           required
         />
-        <Button type="submit" variant={"ghost"} disabled={loading}>
-          {!loading ? "Update" : "Loading"}
+        <Button type="submit" variant={"ghost"} disabled={pending}>
+          {!pending ? "Update" : "Loading"}
         </Button>
       </form>
     </div>
