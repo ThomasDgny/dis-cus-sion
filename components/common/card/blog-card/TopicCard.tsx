@@ -24,7 +24,6 @@ export function BlogCard({ topicData, authorData }: TopicCardProps) {
     <Card className="h-64 cursor-pointer transition-all hover:bg-slate-100 flex flex-col justify-between">
       <Link
         href={`/topic/${id}`}
-        className=""
       >
         <CardHeader className="grid grid-cols-[1fr_55px] items-start gap-4 space-y-0">
           <div className="space-y-3">

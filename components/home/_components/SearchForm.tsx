@@ -60,6 +60,7 @@ export default function SearchForm() {
             onClick={() =>
               router.push(`/search?q=${search}&category=${item.value}`)
             }
+            variant={"ghost"}
             className={`whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-slate-100`}
             key={item.id}
           >
