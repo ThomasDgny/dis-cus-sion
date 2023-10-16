@@ -4,36 +4,31 @@ import { BlogCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics } from "@/types/Types";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { LoadFetch } from "./LoadFetch";
+import { getTopics } from "../actions/getTopics";
+import { pagination } from "@/utils/pagination";
+import { delay } from "@/utils/delay";
 
 interface LoadMoreProps {
   range: number;
   totalTopics: number | null;
+  prevTopics: any[];
 }
 
-export function LoadMore({ range, totalTopics }: LoadMoreProps) {
-  const [topics, setTopics] = useState<any[]>([]);
+export function HomeTopics({ range, totalTopics, prevTopics }: LoadMoreProps) {
+  const [topics, setTopics] = useState<any[]>(prevTopics);
   const [page, setPage] = useState(1);
   const { ref, inView } = useInView();
   const totalDataInDataBase = totalTopics ?? 0;
 
-  function getFromAndTo() {
-    const itemPerPage = range;
-    let from = page * itemPerPage;
-    const to = from + itemPerPage;
-    if (page > 0) from += 1;
-    return { from, to };
-  }
-
-  const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   const loadMoreTopics = async () => {
-    await delay(1000);
-    const { from, to } = getFromAndTo();
-    const newTopics = (await LoadFetch(from, to)) ?? [];
+    await delay(500);
+    const { from, to } = pagination(range, page);
+    const newTopics = await getTopics(from, to);
     setPage((prev) => prev + 1);
-    setTopics((prevTopics: Topics[]) => [...prevTopics, ...newTopics]);
+    setTopics((prevTopics: Topics[]) => [
+      ...prevTopics,
+      ...(newTopics?.topics as Topics[]),
+    ]);
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { DateConverter } from "@/utils/TimeConverter";
+import { dateConverter } from "@/utils/dateConverter";
 import {
   Card,
   CardContent,
@@ -31,7 +31,7 @@ export function BlogCard({ topicData, authorData }: TopicCardProps) {
             <CardTitle className="line-clamp-2 break-all text-xl leading-8">
               {title}
             </CardTitle>
-            <CardDescription>{DateConverter(timestamp)}</CardDescription>
+            <CardDescription>{dateConverter(timestamp)}</CardDescription>
             <CardDescription className="line-clamp-2 break-all">{desc}</CardDescription>
           </div>
           <div>

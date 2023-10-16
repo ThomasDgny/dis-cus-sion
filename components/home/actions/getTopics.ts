@@ -3,11 +3,15 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 
-export async function LoadFetch(from: number, to: number) {
+export async function getTopics(from: number = 0, to: number) {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: newTopics, error } = await supabase
+  const {
+    data: newTopics,
+    count,
+    error,
+  } = await supabase
     .from("topics")
-    .select("*, users(*)")
+    .select("*, users(*)", { count: "exact" })
     .range(from, to)
     .order("timestamp", { ascending: false });
 
@@ -15,6 +19,9 @@ export async function LoadFetch(from: number, to: number) {
     console.error("Error fetching data:", error);
     return null;
   }
-  // console.log(newTopics);
-  return newTopics;
+
+  return {
+    topics: newTopics,
+    totalTopics: count,
+  };
 }

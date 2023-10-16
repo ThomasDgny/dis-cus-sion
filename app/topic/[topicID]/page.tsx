@@ -5,7 +5,7 @@ import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
 import { EditTopic } from "@/components/topic/dialog/EditTopic";
 import ChatMain from "@/components/topic/main/ChatMain";
-import { DateConverter } from "@/utils/TimeConverter";
+import { dateConverter } from "@/utils/dateConverter";
 
 export default async function page({
   params,
@@ -39,7 +39,7 @@ export default async function page({
 
         <div>
         <div className="flex items-center gap-x-2 text-sm text-muted-foreground">
-          {DateConverter(topic.timestamp)}
+          {dateConverter(topic.timestamp)}
          <div>&#x2022;</div> 
           <div className="flex items-center">{topic.category}</div>
         </div>
