@@ -1,12 +1,13 @@
 "use client";
 
-import { BlogCard } from "@/components/common/card/blog-card/TopicCard";
+import { TopicCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics } from "@/types/Types";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { getTopics } from "../actions/getTopics";
 import { pagination } from "@/utils/pagination";
 import { delay } from "@/utils/delay";
+import RenderTopics from "@/components/common/render-topics/RenderTopics";
 
 interface LoadMoreProps {
   range: number;
@@ -44,11 +45,7 @@ export function HomeTopics({ range, totalTopics, prevTopics }: LoadMoreProps) {
   return (
     <>
       <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
-        {topics.map((item) => (
-          <div key={item.id} className="py-2">
-            <BlogCard key={item.id} topicData={item} authorData={item.users} />
-          </div>
-        ))}
+        <RenderTopics array={topics}/>
       </div>
       {isLoading ? (
         <div
@@ -58,11 +55,9 @@ export function HomeTopics({ range, totalTopics, prevTopics }: LoadMoreProps) {
           <span>LOADING...</span>
         </div>
       ) : (
-        <div>
           <span className="col-span-1 my-5 flex items-center justify-center rounded-md bg-slate-100 p-7">
             You reach the bottom
           </span>
-        </div>
       )}
     </>
   );

@@ -1,10 +1,10 @@
 "use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, XCircle } from "lucide-react";
 import { category } from "@/lib/Category";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 
 interface queriesProps {
@@ -17,11 +17,11 @@ interface SearchFormProps {
 }
 
 export default function SearchFormV2({ queries }: SearchFormProps) {
-  const [search, setSearch] = useState<string>(queries?.query || "");
+  const prevSearch: string = queries?.query || "";
   const router = useRouter();
 
-  async function handleSearch(event: FormEvent) {
-    event.preventDefault();
+  async function handleSearch(formData: FormData) {
+    const search = formData.get("search") as string;
     const url = `/search?q=${search}&category=${queries?.category}`;
 
     return router.push(url, {
@@ -32,7 +32,7 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-5">
       <div className="flex w-full justify-center rounded-md bg-slate-100 bg-gradient-to-tl from-blue-200 to-purple-200 py-10">
-        <form onSubmit={handleSearch} className="w-full max-w-xl">
+        <form action={handleSearch} className="w-full max-w-xl">
           <div className="relative w-full max-w-xl">
             <Search className="absolute left-5 top-[32%] h-5 w-5 text-slate-500" />
             <Input
@@ -41,8 +41,7 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
               type="text"
               placeholder="Search topic or paste roomID"
               className="w-full border-none px-14 py-7 shadow-lg"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              defaultValue={prevSearch}
             />
             <Button
               type="submit"
@@ -50,9 +49,8 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
             >
               Search
             </Button>
-            {search.length > 0 && (
+            {prevSearch.length > 0 && (
               <Link
-                onClick={() => setSearch("")}
                 href={`/search?q=&category=${queries?.category}`}
                 className="absolute right-5 top-[32%]"
               >
@@ -66,7 +64,7 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
         {category.map((item) => (
           <Button
             onClick={() =>
-              router.push(`/search?q=${search}&category=${item.value}`)
+              router.push(`/search?q=${prevSearch}&category=${item.value}`)
             }
             variant={"ghost"}
             className={`whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-all hover:bg-slate-100 ${
