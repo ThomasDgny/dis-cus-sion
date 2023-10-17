@@ -34,7 +34,7 @@ export function TopicCard({ topicData, authorData }: TopicCardProps) {
             <CardDescription className="line-clamp-2 break-all">{desc}</CardDescription>
           </div>
           <div>
-            <SaveButton cardID={id} />
+            <SaveButton cardID={id} title={title}/>
           </div>
         </CardHeader>
         </Link>

@@ -6,11 +6,6 @@ interface Category {
 
 export const category: Category[] = [
   {
-    id: 0,
-    category_name: "All",
-    value: "All",
-  },
-  {
     id: 1,
     category_name: "Gaming",
     value: "Gaming",

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import SearchHeader from "@/components/search/header/SearchHeader";
 import { filterEngine } from "@/components/search/actions/searchEngine";
-import { TopicCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics, User } from "@/types/Types";
 import SearchResultNotFound from "@/components/search/_components/SearchResultNotFound";
 import RenderTopics from "@/components/common/render-topics/RenderTopics";

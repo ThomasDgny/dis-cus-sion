@@ -2,7 +2,7 @@ import React from "react";
 import { TopicCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics, User } from "@/types/Types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import RenderTopics from "@/components/common/render-topics/RenderTopics";
 
 type CommonTopics = Topics & { users: User };
 
@@ -24,29 +24,13 @@ export default function ProfileMain({
 
         <TabsContent value="myBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
-            {blogsByUser.map((item) => (
-              <div key={item.id} className="py-2">
-                <TopicCard
-                  key={item.id}
-                  topicData={item}
-                  authorData={item.users}
-                />
-              </div>
-            ))}
+            <RenderTopics array={blogsByUser} />
           </div>
         </TabsContent>
 
         <TabsContent value="savedBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
-            {savedBlogsByUser?.map((item) => (
-              <div key={item.id} className="py-2">
-                <TopicCard
-                  key={item.id}
-                  topicData={item}
-                  authorData={item.users}
-                />
-              </div>
-            ))}
+            <RenderTopics array={savedBlogsByUser} />
           </div>
         </TabsContent>
       </Tabs>

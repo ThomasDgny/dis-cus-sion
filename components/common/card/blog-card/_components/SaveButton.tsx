@@ -7,23 +7,29 @@ import { Database } from "@/lib/database.type";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/components/ui/use-toast";
 
-function SaveButton({ cardID }: { cardID: string }) {
+function SaveButton({ cardID, title }: { cardID: string; title: string | null }) {
   const supabase = createClientComponentClient<Database>();
   const { user } = useAuth();
-  const toast = useToast();
+  const { toast } = useToast();
 
   const handleBookmarkClick = async (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
-    console.log(cardID);
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("saved")
       .insert([{ user_id: user!.id, topic_id: cardID }])
       .select();
-    console.log(data);
-    console.log(error);
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        description: `something went wrong while saving "${title}".`,
+      });
+    } else {
+      toast({ description: `"${title}" has been saved.` });
+    }
   };
 
   return (
