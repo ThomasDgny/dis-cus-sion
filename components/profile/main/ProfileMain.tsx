@@ -1,5 +1,4 @@
 import React from "react";
-import { TopicCard } from "@/components/common/card/blog-card/TopicCard";
 import { Topics, User } from "@/types/Types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RenderTopics from "@/components/common/render-topics/RenderTopics";
@@ -30,7 +29,7 @@ export default function ProfileMain({
 
         <TabsContent value="savedBlogs">
           <div className="grid grid-cols-1 items-start justify-center gap-6 rounded-lg md:grid-cols-2 xl:grid-cols-3">
-            <RenderTopics array={savedBlogsByUser} />
+            <RenderTopics array={savedBlogsByUser} isSaved={true}/>
           </div>
         </TabsContent>
       </Tabs>

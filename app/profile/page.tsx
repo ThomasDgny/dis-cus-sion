@@ -4,9 +4,6 @@ import ProfileMain from "@/components/profile/main/ProfileMain";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
 import { cookies } from "next/headers";
-import { Topics, User } from "@/types/Types";
-
-type CommonTopics = Topics & { users: User };
 
 export default async function page() {
   const supabase = createServerComponentClient<Database>({ cookies });

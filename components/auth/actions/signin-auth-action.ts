@@ -2,7 +2,7 @@
 import { Database } from "@/lib/database.type";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { signInFormSchema } from "@/zod";
+import { signInFormSchema } from "@/lib/zod";
 
 export async function handleSignIn(formData: FormData) {
   const supabase = createServerActionClient<Database>({ cookies });

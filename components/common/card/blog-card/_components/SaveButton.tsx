@@ -19,7 +19,7 @@ function SaveButton({ cardID, title }: { cardID: string; title: string | null })
 
     const { error } = await supabase
       .from("saved")
-      .insert([{ user_id: user!.id, topic_id: cardID }])
+      .upsert([{ user_id: user!.id, topic_id: cardID }])
       .select();
 
     if (error) {

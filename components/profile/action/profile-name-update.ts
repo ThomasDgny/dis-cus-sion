@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.type";
-import { userName } from "@/zod";
+import { userName } from "@/lib/zod";
 
 export async function updateUserName(userID: string, formData: FormData) {
   const supabase = createServerActionClient<Database>({ cookies });
