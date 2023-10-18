@@ -6,6 +6,10 @@
 <br>
 <br>
 
+<div align="center">
+live link <a href="https://dis-cus-sion.vercel.app/" target="_blank">dis-cus-sion</a>
+</div>
+
 # Discussion App
 Welcome to the Discussion App, a platform for creating and engaging in discussions on various topics. This app allows users to create topics, discuss them in a chat interface, save topics for later, and customize user profiles.
 
@@ -31,7 +35,6 @@ Welcome to the Discussion App, a platform for creating and engaging in discussio
   - [Zod](https://www.npmjs.com/package/zod): A TypeScript-first schema validation library.
   - [Server Actions](https://supabase.com/docs/guides/auth/auth-helpers/nextjs#server-actions): Serverless functions for database actions.
   - [Lucide Icons Pack](https://lucide.dev/): A set of icons designed for clear and simple visuals.
- 
   - [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for building custom user interfaces.
 
 ## Getting Started
