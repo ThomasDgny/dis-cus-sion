@@ -4,11 +4,12 @@
 <img width="500" alt="logo" src="https://github.com/GoodGuyForReal/dis-cus-sion/assets/99910240/542e42e4-3a46-4323-84dc-c8485a472774">
 </div>
 <br>
+<div align="center">
+Live link <a href="https://dis-cus-sion.vercel.app/" target="_blank">dis-cus-sion</a> 😃
+</div>
 <br>
 
-<div align="center">
-live link <a href="https://dis-cus-sion.vercel.app/" target="_blank">dis-cus-sion</a>
-</div>
+
 
 # Discussion App
 Welcome to the Discussion App, a platform for creating and engaging in discussions on various topics. This app allows users to create topics, discuss them in a chat interface, save topics for later, and customize user profiles.
