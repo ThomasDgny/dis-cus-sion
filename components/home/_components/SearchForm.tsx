@@ -31,7 +31,7 @@ export default function SearchForm() {
               id="search"
               name="search"
               type="text"
-              placeholder="Search topic or paste roomID"
+              placeholder="Search topic title"
               className="w-full border-none px-14 py-7 shadow-lg"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

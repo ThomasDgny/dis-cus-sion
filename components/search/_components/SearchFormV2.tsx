@@ -39,7 +39,7 @@ export default function SearchFormV2({ queries }: SearchFormProps) {
               id="search"
               name="search"
               type="text"
-              placeholder="Search topic or paste roomID"
+              placeholder="Search topic title"
               className="w-full border-none px-14 py-7 shadow-lg"
               defaultValue={prevSearch}
             />
