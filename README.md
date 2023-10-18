@@ -1,6 +1,6 @@
 # Discussion App
 
-Welcome to the Discussion App, a platform for creating and engaging in discussions on various topics. This app allows users to create topics, discuss them in a chat interface, save topics for later, and customize their profiles. Built with cutting-edge technologies and a focus on user experience, the Discussion App is a powerful tool for online discussions.
+Welcome to the Discussion App, a platform for creating and engaging in discussions on various topics. This app allows users to create topics, discuss them in a chat interface, save topics for later, and customize user profiles.
 
 ## Features
 
