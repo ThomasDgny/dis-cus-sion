@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { category } from "@/lib/Category";
 import React from "react";
 import SearchForm from "../_components/SearchForm";
 
@@ -9,7 +7,7 @@ export default function HomeHeader() {
       <div className="w-full space-y-2 text-center">
         <h1 className="text-3xl font-semibold">Search</h1>
         <p className="text-slate-500">
-          The best search UI work, designs, illustrations, and graphic elements.
+          Welcome to our hub where discussions thrive.
         </p>
       </div>
       <SearchForm />

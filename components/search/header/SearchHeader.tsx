@@ -17,7 +17,7 @@ export default function SearchHeader({ category, query }: queriesProps) {
       <div className="w-full space-y-2 text-center">
         <h1 className="text-3xl font-semibold">{queries.query || queries.category || 'Discover'}</h1>
         <p className="text-slate-500">
-          The best search UI work, designs, illustrations, and graphic elements.
+        Welcome to our hub where discussions thrive.
         </p>
       </div>
       <SearchFormV2 queries={queries} />
